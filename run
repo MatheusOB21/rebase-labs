@@ -2,7 +2,7 @@
 
 docker run \
   --rm \
-  --name rebase-challenge-2022 \
+  --name rebase-labs \
   -w /app \
   -v $(pwd):/app \
   -p 3000:3000 \
