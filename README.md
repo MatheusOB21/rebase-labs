@@ -4,7 +4,7 @@ Uma app web para listagem de exames médicos.
 
 ---
 
-## Tech Stack
+### Tech Stack
 
 * Docker
 * Ruby
@@ -14,23 +14,23 @@ Uma app web para listagem de exames médicos.
 
 ---
 
-## Premissa
+### Premissa
 
 A premissa principal deste laboratório é que a app **não seja feita em Rails**, devendo seguir o padrão **Sinatra** que há neste projeto, ou então se preferir, podendo utilizar outro web framework que **não** seja Rails, por ex. grape, padrino, rack, etc ou até mesmo um HTTP/TCP server "na mão".
 
 ---
 
-## Laboratório
+### Laboratório
 
 Abaixo vamos listar os 4 principais objetivos deste laboratório. Mas não se preocupe se nesta fase parecer muita coisa, pois vamos abordar os temas e dicas de cada etapa em diferentes sessões ao longo das próximas 2 semanas.
 
 ---
 
-## Feature 1: Importar os dados do CSV para um database SQL
+### Feature 1: Importar os dados do CSV para um database SQL
 
 A primeira versão original da API deverá ter apenas um endpoint `/tests`, que lê os dados de um arquivo CSV e renderiza no formato JSON. Você pode _modificar_ este endpoint para que, ao invés de ler do CSV, faça a leitura **diretamente de uma base de dados SQL**.
 
-### Script para importar os dados
+#### Script para importar os dados
 
 Este passo de "importar" os dados do CSV para um **database SQL** (por ex. PostgreSQL), pode ser feito com um script Ruby simples ou **rake** task, como preferir.
 
@@ -44,7 +44,7 @@ E depois, ao consultar o SQL, os dados deveriam estar *populados*.
 * _Dica 2_: utilizar um container para a API e **outro container** para o PostgreSQL. Utilize **networking** do `Docker` para que os 2 containers possam conversar entre si
 * _Dica 3_: comandos SQL -> `DROP TABLE`, `INSERT INTO`
 
-### Modificar a implementação do endpoint atual
+#### Modificar a implementação do endpoint atual
 
 O resultado atual que o endpoint traz ao fazer a leitura do CSV, deve ser o mesmo quando modificarmos para ler direto do database.
 
@@ -54,7 +54,7 @@ O resultado atual que o endpoint traz ao fazer a leitura do CSV, deve ser o mesm
 
 ---
 
-## Feature 2: Exibir listagem de exames no navegador Web
+### Feature 2: Exibir listagem de exames no navegador Web
 Agora vamos exibir as mesmas informações da etapa anterior, mas desta vez de uma forma mais amigável ao usuário. Para isto, você deve criar uma nova aplicação, que conterá todo o código necessário para a web - HTML, CSS e Javascript.
 
 Ao final teremos:
@@ -71,7 +71,7 @@ O objetivo aqui, neste passo, é carregar os dados de exames da API utilizando J
 
 ---
 
-## Feature 3: Exibir detalhes de um exame em formato HTML a partir do token do resultado
+### Feature 3: Exibir detalhes de um exame em formato HTML a partir do token do resultado
 Nesta etapa vamos implementar uma nova funcionalidade: pesquisar os resultados com base em um token de exame. 
 
 Ao final teremos:
@@ -79,12 +79,12 @@ Ao final teremos:
 1. Um endpoint do Sinatra (C) que devolve os detalhes de um exame, a partir de um token que vêm no reqeust, em formato JSON
 2. No endpoint que devolve o HTML da listagem, deve adicionar uma tag HTML `<form>` que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML
 
-### Criar endpoint para mostrar os detalhes de um exame médico
+#### Criar endpoint para mostrar os detalhes de um exame médico
 
 Implementar o endpoint `/tests/:token` que permita que o usuário da API, ao fornecer o token do exame, possa ver os detalhes daquele exame no formato JSON, tal como está implementado no endpoint
 `/tests`. A consulta deve ser feita na base de dados.
 
-### Exemplo
+#### Exemplo
 Request:
 ```bash
 GET /tests/T9O6AI
@@ -179,7 +179,7 @@ Response:
 
 ---
 
-## Feature 4: Importar resultados de exames em formato CSV de forma assíncrona
+### Feature 4: Importar resultados de exames em formato CSV de forma assíncrona
 Neste momento fazemos o import através de um script. Mas este script tem que ser executado por alguém developer ou admin do sistema.
 
 Para melhorar isto, idealmente qualquer usuário da API poderia chamar um endpoint para atualizar os dados. Assim, o endpoint deveria aceitar um arquivo CSV dinâmico e importar os dados para o PostgreSQL.
@@ -189,14 +189,14 @@ Exemplo:
 $ POST /import
 ```
 
-### Implementar endpoint para receber um CSV no HTTP request
+#### Implementar endpoint para receber um CSV no HTTP request
 Neste passo, devemos focar apenas em receber o CSV via HTTP e utilizar o mesmo código do script de import para popular o database.
 
 * _Dica 1_: receber o **conteúdo do CSV** no HTTP request body
 * _Dica 2_: pode usar a ferramenta `Postman` para testar os pedidos via HTTP. Pode também utilizar o `curl` para isto
 * _Dica 3_: nesta fase, ainda fazer o processo "síncrono", ou seja, o usuário que chamar o endpoint `POST /import` deve ficar à espera
 
-### Executar o import do endpoint de forma assíncrona em background
+#### Executar o import do endpoint de forma assíncrona em background
 Uma vez que fizemos o endpoint de `POST /import`, agora vamos focar numa implementação que permita que o usuário não fique _à espera_, ou seja, executar em um **background job**, mesmo o usuário sabendo que
 não vai ficar pronto imediatamente. Neste caso, o processo de import fica pronto **eventualmente**.
 
@@ -204,7 +204,7 @@ não vai ficar pronto imediatamente. Neste caso, o processo de import fica pront
 * _Dica 2_: o Sidekiq roda em um container separado da API
 * _Dica 3_: subir um container para a visualização "Web" das filas do Sidekiq
 
-### Botão de "Importar CSV" na página Web em formato HTML
+#### Botão de "Importar CSV" na página Web em formato HTML
 Neste momento, o processo de importar o CSV está manual com chamada direta ao endpoint `POST /import`. Para simplificar a quem utiliza a plataforma, a página HTML com a listagem pode trazer um botão que faz a requisição com o upload do conteúdo do arquivo CSV.
 
 * _Dica 1_: o botão ficará "estático" no HTML
@@ -212,7 +212,7 @@ Neste momento, o processo de importar o CSV está manual com chamada direta ao e
 
 ---
 
-## Como as sessões serão estruturadas
+### Como as sessões serão estruturadas
 Iremos realizar 4 sessões de aprendizado nos principais temas que serão abordados durante o laboratório.
 
 * Sessão 1: Docker, Sinatra e SQL
@@ -222,20 +222,20 @@ Iremos realizar 4 sessões de aprendizado nos principais temas que serão aborda
 
 ---
 
-## Nossos valores
+### Nossos valores
 Aqui listamos alguns valores que compartilhamos sobre engenharia de software.
 
-### Valorizamos documentação
+#### Valorizamos documentação
 Tente documentar o máximo possível sobre sua aplicação em arquivos `Markdown` (como este aqui por exemplo) ou então em páginas wiki.
 
 Por se tratar de uma API separada do front-end, é extramemente importante que sejamos capazes de ler a documentação e conseguirmos fazer HTTP requests e analisar as respostas, tudo isso sem precisarmos perguntar como a aplicação deve se comportar.
 
 Uma boa documentação é a *base* para a comunicação e boa saúde de um projeto de software.
 
-### Valorizamos testes
+#### Valorizamos testes
 Testes são uma parte crucial no desenvolvimento de software. Se teu projeto não tem testes, não há garantias automatizadas de que ele vai continuar funcionando ao longo do tempo, à medida que mais código é adicionado nele.
 
 ---
 
-## Dúvidas?
+### Dúvidas?
 Em caso de dúvidas sobre qualquer um dos labs ou conteúdo das sessões, fique à vontade para conversar na ferramenta de comunicação do programa.
