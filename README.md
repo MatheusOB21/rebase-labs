@@ -165,7 +165,8 @@ Response:
 Nesta etapa vamos implementar uma nova funcionalidade: pesquisar os resultados com base em um token de exame. 
 
 Você deve criar um endpoint no Sinatra (C) que devolve, com base no token enviado no request, os detalhes de um exame em formato JSON.
-Adicionalmente, também criar, no HTML da listagem de exames, uma tag HTML <form> que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML.
+
+Adicionalmente, também criar, no HTML da listagem de exames, uma tag HTML `<form>` que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML.
 
 #### Criar endpoint para mostrar os detalhes de um exame médico
 
