@@ -307,7 +307,7 @@ Iremos realizar 4 sessões de aprendizado nos principais temas que serão aborda
 * Sessão 1: Docker, Sinatra e SQL
 * Sessão 2: HTTP e Web (Javascript, HTML e CSS)
 * Sessão 3: Processamento assíncrono (Sidekiq)
-* Sessão 4: Tirar dúvidas finais e encerramento
+* Sessão 4: Easter egg, tirar dúvidas finais e encerramento
 
 ---
 
