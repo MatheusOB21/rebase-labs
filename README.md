@@ -28,7 +28,7 @@ Abaixo vamos listar os 4 principais objetivos deste laboratório. Mas não se pr
 
 ### Feature 1: Importar os dados do CSV para um database SQL
 
-A primeira versão original da API deverá ter apenas um endpoint `/tests`, que lê os dados de um arquivo CSV e renderiza no formato JSON. Você pode _modificar_ este endpoint para que, ao invés de ler do CSV, faça a leitura **diretamente de uma base de dados SQL**.
+A primeira versão original da API deverá ter apenas um endpoint `/tests`, que lê os dados de um arquivo CSV e renderiza no formato JSON. Você deve _modificar_ este endpoint para que, ao invés de ler do CSV, faça a leitura **diretamente de uma base de dados SQL**.
 
 #### Script para importar os dados
 
@@ -57,10 +57,9 @@ O resultado atual que o endpoint traz ao fazer a leitura do CSV, deve ser o mesm
 ### Feature 2: Exibir listagem de exames no navegador Web
 Agora vamos exibir as mesmas informações da etapa anterior, mas desta vez de uma forma mais amigável ao usuário. Para isto, você deve criar uma nova aplicação, que conterá todo o código necessário para a web - HTML, CSS e Javascript.
 
-Ao final teremos:
+Criar um endpoint do Sinatra (A) que devolve listagem de exames em formato JSON.
 
-1. Um endpoint do Sinatra (A) que devolve listagem de exames em formato JSON
-2. Outro endpoint do Sinatra (B) que devolve um HTML que contém Javascript que busca os exames no endpoint (A) e mostra na tela de forma amigável
+Adicionar também, outro endpoint do Sinatra (B) que devolve um HTML contendo apenas instruções Javascript. Estas instruções serão responsáveis por buscar os exames no enponint (A) e exibi-los na tela de forma amigável.
 
 O objetivo aqui, neste passo, é carregar os dados de exames da API utilizando Javascript. Como exemplo, você pode abrir em seu browser o arquivo `index.html` contido neste snippet e investigar seu funcionamento.
 
@@ -69,22 +68,111 @@ O objetivo aqui, neste passo, é carregar os dados de exames da API utilizando J
 * _Dica 3_: Pesquise sobre DOM, uma API Javascript para manipular uma estrutura de documentos (seu HTML é um tipo de documento).
 * _Dica 4_: Utilize CSS para estilizar a página e deixá-la mais amigável ao usuário.
 
+#### Exemplo do request e response
+Request:
+```bash
+GET /tests
+```
+
+Response:
+
+```json
+[{
+   "result_token":"T9O6AI",
+   "result_date":"2021-11-21",
+   "cpf":"066.126.400-90",
+   "name":"Matheus Barroso",
+   "email":"maricela@streich.com",
+   "birthday":"1972-03-09",
+   "doctor": {
+      "crm":"B000B7CDX4",
+      "crm_state":"SP",
+      "name":"Sra. Calebe Louzada"
+   },
+   "tests":[
+      {
+         "type":"hemácias",
+         "limits":"45-52",
+         "result":"48"
+      },
+      {
+         "type":"leucócitos",
+         "limits":"9-61",
+         "result":"75"
+      },
+      {
+         "test_type":"plaquetas",
+         "test_limits":"11-93",
+         "result":"67"
+      },
+      {
+         "test_type":"hdl",
+         "test_limits":"19-75",
+         "result":"3"
+      },
+      {
+         "test_type":"ldl",
+         "test_limits":"45-54",
+         "result":"27"
+      },
+      {
+         "test_type":"vldl",
+         "test_limits":"48-72",
+         "result":"27"
+      },
+      {
+         "test_type":"glicemia",
+         "test_limits":"25-83",
+         "result":"78"
+      },
+      {
+         "test_type":"tgo",
+         "test_limits":"50-84",
+         "result":"15"
+      },
+      {
+         "test_type":"tgp",
+         "test_limits":"38-63",
+         "result":"34"
+      },
+      {
+         "test_type":"eletrólitos",
+         "test_limits":"2-68",
+         "result":"92"
+      },
+      {
+         "test_type":"tsh",
+         "test_limits":"25-80",
+         "result":"21"
+      },
+      {
+         "test_type":"t4-livre",
+         "test_limits":"34-60",
+         "result":"95"
+      },
+      {
+         "test_type":"ácido úrico",
+         "test_limits":"15-61",
+         "result":"10"
+      }
+   ]
+}]
+```
+
 ---
 
 ### Feature 3: Exibir detalhes de um exame em formato HTML a partir do token do resultado
 Nesta etapa vamos implementar uma nova funcionalidade: pesquisar os resultados com base em um token de exame. 
 
-Ao final teremos:
-
-1. Um endpoint do Sinatra (C) que devolve os detalhes de um exame, a partir de um token que vêm no reqeust, em formato JSON
-2. No endpoint que devolve o HTML da listagem, deve adicionar uma tag HTML `<form>` que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML
+Você deve criar um endpoint no Sinatra (C) que devolve, com base no token enviado no request, os detalhes de um exame em formato JSON.
+Adicionalmente, também criar, no HTML da listagem de exames, uma tag HTML <form> que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML.
 
 #### Criar endpoint para mostrar os detalhes de um exame médico
 
-Implementar o endpoint `/tests/:token` que permita que o usuário da API, ao fornecer o token do exame, possa ver os detalhes daquele exame no formato JSON, tal como está implementado no endpoint
+Você deve implementar o endpoint `/tests/:token` que permita que o usuário da API, ao fornecer o token do exame, possa ver os detalhes daquele exame no formato JSON, tal como está implementado no endpoint
 `/tests`. A consulta deve ser feita na base de dados.
 
-#### Exemplo
+#### Exemplo do request e response
 Request:
 ```bash
 GET /tests/T9O6AI
@@ -227,8 +315,6 @@ Aqui listamos alguns valores que compartilhamos sobre engenharia de software.
 
 #### Valorizamos documentação
 Tente documentar o máximo possível sobre sua aplicação em arquivos `Markdown` (como este aqui por exemplo) ou então em páginas wiki.
-
-Por se tratar de uma API separada do front-end, é extramemente importante que sejamos capazes de ler a documentação e conseguirmos fazer HTTP requests e analisar as respostas, tudo isso sem precisarmos perguntar como a aplicação deve se comportar.
 
 Uma boa documentação é a *base* para a comunicação e boa saúde de um projeto de software.
 
