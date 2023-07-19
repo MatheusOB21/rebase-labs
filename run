@@ -6,5 +6,6 @@ docker run \
   -w /app \
   -v $(pwd):/app \
   -p 3000:3000 \
+  --network rebaselabs-network \
   ruby \
   bash -c "gem install rack pg sinatra puma && ruby server.rb"
