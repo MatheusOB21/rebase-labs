@@ -3,7 +3,14 @@ require 'csv'
 
 
 rows = CSV.read("./data.csv", col_sep: ';')
-rows.shift
+columns = rows.shift
+
+rows.map do |row|
+  row.each_with_object({}).with_index do |(cell, acc), idx|
+    column = columns[idx]
+    acc[column] = cell
+  end
+end
 
 $postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin')
 
@@ -31,20 +38,28 @@ patients = rows.map{ |row| row.first(6) }
 exams = rows.map{|row| row.last(9)}
 
 def patient_insert(patient)
-  $postgresdb.exec("INSERT INTO patients(cpf, name, email, birth_data, address, city, state) 
-  VALUES ('#{patient[0]}', '#{patient[1]}', '#{patient[2]}', '#{patient[3]}', '#{patient[4]}', '#{patient[5]}', '#{patient[6]}')")
+  $postgresdb.exec('INSERT INTO patients(cpf, name, email, birth_data, address, city, state) 
+  VALUES ($1, $2, $3, $4, $5, $6, $7)', [patient[0], patient[1], patient[2], patient[3], patient[4], patient[5], patient[6]])
 end
 
-def exam_insert(exam, patient_id)
-  $postgresdb.exec("INSERT INTO exams(crm_doctor, state_crm_doctor, name_doctor, email_doctor, token, data_exam, type_exam, limit_type_exam, result_type_exam, patient_id) 
-  VALUES ('#{exam[7]}', '#{exam[8]}' , '#{exam[9]}', '#{exam[10]}', '#{exam[11]}', '#{exam[12]}', '#{exam[13]}', '#{exam[14]}', '#{exam[15]}','#{patient_id.id}')")
+def exam_insert(exam, patient)
+  $postgresdb.exec('INSERT INTO exams(crm_doctor, state_crm_doctor, name_doctor, email_doctor, token, data_exam, type_exam, limit_type_exam, result_type_exam, patient_id) 
+  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)', [exam[7], exam[8] , exam[9], exam[10], exam[11], exam[12], exam[13], exam[14], exam[15], patient[0]['id']])
+end
+
+def patient_find(cpf)
+  $postgresdb.exec("SELECT * FROM patients WHERE cpf='#{cpf}'").to_a
 end
 
 rows.each do |row|
-  $postgresdb
+  patient = patient_find(row[0])
+  
+  if patient.empty?   
     patient_insert(row)
-    patient_id = $postgresdb.exec("SELECT id FROM patients WHERE cpf='#{row[0]}'").to_a
-    exam_insert(row, patient_id)
+    patient = patient_find(row[0])
+  end
+  
+  exam_insert(row, patient)
 end
 
 
