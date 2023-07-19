@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker run \
+  --name postgresdb \
+  -e POSTGRES_USER=admin \
+  -e POSTGRES_PASSWORD=admin \
+  -v $(pwd)/postgres-data-rebaselabs:/var/lib/postgresq/data \
+  --rm \
+  --network rebaselabs-network \
+  postgres
