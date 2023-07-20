@@ -2,26 +2,11 @@ require 'sinatra'
 require 'rack/handler/puma'
 require 'pg'
 require 'csv'
+require 'json'
+require_relative 'test'
 
 get '/tests' do
-  $postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin')
-
-  result =  $postgresdb.exec('SELECT patients.*, exams.crm_doctor, state_crm_doctor, name_doctor, 
-                              email_doctor, token, data_exam, type_exam, limit_type_exam, 
-                              result_type_exam FROM patients INNER JOIN exams ON exams.patient_id = patients.id')
-  
-  result.to_a.to_json
-  
-  # rows = CSV.read("./data.csv", col_sep: ';')
-
-  # columns = rows.shift
-
-  # rows.map do |row|
-  #   row.each_with_object({}).with_index do |(cell, acc), idx|
-  #     column = columns[idx]
-  #     acc[column] = cell
-  #   end
-  # end.to_json
+  response = Test.all.to_json
 end
 
 get '/tests_json' do
@@ -32,7 +17,7 @@ get 'instructions' do
 end
 
 get '/hello' do
-  'Hello world!'
+  'Hello World'
 end
 
 Rack::Handler::Puma.run(
