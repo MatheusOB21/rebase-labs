@@ -6,11 +6,13 @@ require 'json'
 require_relative 'test'
 
 get '/tests' do
+  content_type :json
   response = Test.all.to_json
 end
 
-get '/tests_json' do
-  
+get '/tests/json' do
+  content_type :json
+  response = Test.all.to_json
 end
 
 get 'instructions' do

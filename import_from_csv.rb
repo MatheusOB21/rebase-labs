@@ -23,19 +23,19 @@ $postgresdb.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL PRIMARY KEY,
                                              state VARCHAR)")
 
 $postgresdb.exec("CREATE TABLE IF NOT EXISTS doctors (id SERIAL PRIMARY KEY, 
-                                             crm_doctor VARCHAR, 
-                                             state_crm_doctor VARCHAR(2), 
-                                             name_doctor VARCHAR, 
-                                             email_doctor VARCHAR)")
+                                             crm VARCHAR, 
+                                             state_crm VARCHAR(2), 
+                                             name VARCHAR, 
+                                             email VARCHAR)")
 
 $postgresdb.exec("CREATE TABLE IF NOT EXISTS exams (id SERIAL,
                                              patient_id SERIAL REFERENCES patients(id),
                                              doctor_id SERIAL REFERENCES doctors(id),
-                                             token VARCHAR, 
-                                             data_exam VARCHAR, 
-                                             type_exam VARCHAR, 
-                                             limit_type_exam VARCHAR, 
-                                             result_type_exam VARCHAR)")
+                                             result_token VARCHAR, 
+                                             date VARCHAR, 
+                                             type VARCHAR, 
+                                             limits_type VARCHAR, 
+                                             result_type VARCHAR)")
 
 def patient_insert(patient)
   $postgresdb.exec('INSERT INTO patients(cpf, name, email, birth_data, address, city, state) 
@@ -45,13 +45,13 @@ def patient_insert(patient)
 end
 
 def doctor_insert(doctor)
-  $postgresdb.exec('INSERT INTO doctors(crm_doctor, state_crm_doctor, name_doctor, email_doctor) 
+  $postgresdb.exec('INSERT INTO doctors(crm, state_crm, name, email) 
   VALUES ($1, $2, $3, $4)', 
   [doctor['crm médico'], doctor['crm médico estado'] , doctor['nome médico'], doctor['email médico']])
 end
 
 def exam_insert(exam, patient, doctor)
-  $postgresdb.exec('INSERT INTO exams(token, data_exam, type_exam, limit_type_exam, result_type_exam, patient_id, doctor_id) 
+  $postgresdb.exec('INSERT INTO exams(result_token, date, type, limits_type, result_type, patient_id, doctor_id) 
   VALUES ($1, $2, $3, $4, $5, $6, $7)', 
   [exam['token resultado exame'], exam['data exame'], exam['tipo exame'], exam['limites tipo exame'], exam['resultado tipo exame'], 
    patient[0]['id'], doctor[0]['id']])
@@ -62,7 +62,7 @@ def patient_find(cpf)
 end
 
 def doctor_find(crm)
-  $postgresdb.exec("SELECT * FROM doctors WHERE crm_doctor='#{crm}'").to_a
+  $postgresdb.exec("SELECT * FROM doctors WHERE crm='#{crm}'").to_a
 end
 
 
