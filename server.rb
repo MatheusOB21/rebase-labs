@@ -5,6 +5,16 @@ require 'csv'
 require 'json'
 require_relative 'test'
 
+get '/genres' do
+  File.open('index.html')
+end
+
+get '/main.js' do
+  File.open('main.js')
+end
+
+
+
 get '/tests' do
   content_type :json
   response = Test.all.to_json
@@ -12,7 +22,7 @@ end
 
 get '/tests/json' do
   content_type :json
-  response = Test.all.to_json
+  response = Test.all_json.to_json
 end
 
 get 'instructions' do
