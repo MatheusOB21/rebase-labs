@@ -13,14 +13,12 @@ get '/main.js' do
   File.open('main.js')
 end
 
-
-
 get '/tests' do
   content_type :json
   response = Test.all.to_json
 end
 
-get '/tests/json' do
+get '/tests/format=json' do
   content_type :json
   response = Test.all_json.to_json
 end

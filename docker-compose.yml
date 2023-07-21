@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  rebase-labs:
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - labs-gems:/usr/local/bundle
+    command: bash -c "bundle && ruby server.rb"
+    ports:
+     - "3000:3000" 
+    depends_on:
+     - postgresdb
+  
+  postgresdb:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes: 
+    - ./postgres-data-rebaselabs:/var/lib/postgresq/data  
+
+volumes:
+  labs-gems:
