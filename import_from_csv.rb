@@ -1,17 +1,10 @@
 require 'pg'
 require 'csv'
 
-rows = CSV.read("./data.csv", col_sep: ';')
-columns = rows.shift
-
-rows.map! do |row|
-  row.each_with_object({}).with_index do |(cell, acc), idx|
-    column = columns[idx]
-    acc[column] = cell
-  end
-end
-
-$postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin')
+HOST = 'postgresdb'
+USER = 'admin'
+PASSWORD = 'admin123'
+$postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
 
 $postgresdb.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL PRIMARY KEY, 
                                              cpf VARCHAR, 
@@ -39,6 +32,7 @@ $postgresdb.exec("CREATE TABLE IF NOT EXISTS types (id SERIAL,
                                              type VARCHAR, 
                                              limits_type VARCHAR, 
                                              result_type VARCHAR)")
+                                             
 
 def patient_insert(patient)
   $postgresdb.exec('INSERT INTO patients(cpf, name, email, birth_date, address, city, state) 
@@ -66,17 +60,26 @@ def type_insert(type)
 end
 
 def patient_find(cpf)
-  $postgresdb.exec("SELECT * FROM patients WHERE cpf ='#{cpf}'").to_a
+  $postgresdb.exec('SELECT * FROM patients WHERE cpf = $1', [cpf]).to_a
 end
 
 def doctor_find(crm)
-  $postgresdb.exec("SELECT * FROM doctors WHERE crm ='#{crm}'").to_a
+  $postgresdb.exec('SELECT * FROM doctors WHERE crm = $1', [crm]).to_a
 end
 
 def exam_find(token)
-  $postgresdb.exec("SELECT * FROM exams WHERE result_token ='#{token}'").to_a
+  $postgresdb.exec('SELECT * FROM exams WHERE result_token = 1$', [token]).to_a
 end
 
+rows = CSV.read("./data.csv", col_sep: ';')
+columns = rows.shift
+
+rows.map! do |row|
+  row.each_with_object({}).with_index do |(cell, acc), idx|
+    column = columns[idx]
+    acc[column] = cell
+  end
+end
 
 rows.each do |row|
   patient = patient_find(row['cpf'])
@@ -96,27 +99,3 @@ rows.each do |row|
   exam_insert(row, patient, doctor) if exam.empty? 
   type_insert(row) 
 end
-
-# PACIENTE
-# "cpf":"048.973.170-88",
-# "nome paciente":"Emilly Batista Neto",
-# "email paciente":"gerald.crona@ebert-quigley.com",
-# "data nascimento paciente":"2001-03-11",
-# "endereço/rua paciente":"165 Rua Rafaela",
-# "cidade paciente":"Ituverava","
-# "estado patiente":"Alagoas",
-
-# MEDICO
-# "crm médico":"B000BJ20J4",
-# "crm médico estado":"PI",
-# "nome médico":"Maria Luiza Pires",
-# "email médico":"denna@wisozk.biz",
-
-# EXAME
-# "id paciente"
-# "id medico"
-# "token resultado exame":"IQCZ17",
-# "data exame":"2021-08-05",
-# "tipo exame":"hemácias",
-# "limites tipo exame":"45-52",
-# "resultado tipo exame":"97"}

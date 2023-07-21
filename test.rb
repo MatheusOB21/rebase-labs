@@ -1,9 +1,11 @@
 require 'pg'
 
 class Test
-  $postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin')
-  
-  def self.format_json(exams)
+  HOST = 'postgresdb'
+  USER = 'admin'
+  PASSWORD = 'admin123'
+
+  def self.format_json(postgresdb, exams)
     exams.map do |exam|
       {
         result_token: exam['result_token'],
@@ -17,13 +19,14 @@ class Test
           crm_state: exam['doctor_state_crm'],
           name: exam['doctor_name'],
         },
-        tests: $postgresdb.exec("SELECT type, limits_type, result_type FROM types WHERE result_token_exam = '#{exam['result_token']}'").to_a
+        tests: postgresdb.exec('SELECT type, limits_type, result_type FROM types WHERE result_token_exam = $1',[exam['result_token']]).to_a
       }
     end
   end
 
   def self.all
-    $postgresdb.exec('SELECT patients.cpf AS cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date 
+    postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
+    postgresdb.exec('SELECT patients.cpf AS cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date 
                       AS patient_birth_date, patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state, 
                       doctors.crm AS doctor_crm, doctors.state_crm AS doctor_crm_state, doctors.name AS doctor_name, doctors.email 
                       AS doctor_email, exams.result_token AS exam_result_token, exams.date AS exam_date, types.type AS exam_type, 
@@ -32,18 +35,20 @@ class Test
   end
 
   def self.all_json
-    exams = $postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
+    postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
+    exams = postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
                                     patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id').to_a
-    format_json(exams)
+    format_json(postgresdb, exams)
   end
 
   def self.find(token)
-    exams = $postgresdb.exec("SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
+    postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
+    exams = postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
-                                    patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id WHERE result_token = '#{token}'").to_a
-    format_json(exams)
+                                    patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id WHERE result_token = $1', [token]).to_a
+    format_json(postgresdb, exams)
   end
 end

@@ -1,16 +1,11 @@
 require 'sinatra'
 require 'rack/handler/puma'
 require 'pg'
-require 'csv'
 require 'json'
 require_relative 'test'
 
-get '/genres' do
+get '/index' do
   File.open('index.html')
-end
-
-get '/main.js' do
-  File.open('main.js')
 end
 
 get '/tests' do

@@ -7,7 +7,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      - labs-gems:/usr/local/bundle
+      - ./gems:/usr/local/bundle
     command: bash -c "bundle && ruby server.rb"
     ports:
      - "3000:3000" 
@@ -19,9 +19,6 @@ services:
     image: postgres
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
+      POSTGRES_PASSWORD: admin123
     volumes: 
-    - ./postgres-data-rebaselabs:/var/lib/postgresq/data  
-
-volumes:
-  labs-gems:
+    - ./postgres-data:/var/lib/postgresql/data
