@@ -23,7 +23,14 @@ get '/tests/format=json' do
   response = Test.all_json.to_json
 end
 
+get '/tests/:token' do
+  content_type :json
+  response = Test.find(params['token'])
+  response.first.to_json
+end
+
 get 'instructions' do
+  
 end
 
 get '/hello' do

@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   rebase-labs:
+    container_name: rebaselabs
     image: ruby
     working_dir: /app
     volumes:
@@ -14,6 +15,7 @@ services:
      - postgresdb
   
   postgresdb:
+    container_name: postgreesdb
     image: postgres
     environment:
       POSTGRES_USER: admin
