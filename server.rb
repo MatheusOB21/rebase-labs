@@ -25,8 +25,9 @@ get '/tests/:token' do
   response.first.to_json
 end
 
-get 'instructions' do
-  
+get 'tests/:token/details' do
+  content_type :html
+  File.open('views/index.html')
 end
 
 get '/hello' do
