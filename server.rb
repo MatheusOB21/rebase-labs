@@ -9,6 +9,11 @@ get '/index' do
   File.open('views/index.html')
 end
 
+get '/index/details' do
+  content_type :html
+  File.open('views/details.html')
+end
+
 get '/tests' do
   content_type :json
   response = Test.all.to_json
@@ -23,11 +28,6 @@ get '/tests/:token' do
   content_type :json
   response = Test.find(params['token'])
   response.first.to_json
-end
-
-get 'tests/:token/details' do
-  content_type :html
-  File.open('views/index.html')
 end
 
 get '/hello' do

@@ -1,0 +1,95 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('fonts/Montserrat.ttf')format('truetype');
+  }
+  
+  :root{
+    --bg-primary: #1D1E42;
+    --bg-secundary: #26264F;
+    
+    --color-text: #FFF;
+    --color-secundary: #624DE3;
+  }
+  
+  body{
+    background-color: var(--bg-primary);
+    font-family: Montserrat;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  body .conteiner-lg{
+    color: var(--color-text);
+    text-align: center;
+    margin-left: 80px;
+    margin-right: 80px;
+  }
+  
+  body form{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 20px;
+  }
+  
+  body form input{
+    max-width: 250px;
+    margin: 5px;
+    padding: 8px 9px;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+    border-radius: 8px;
+    border: 1px solid var(--color-text);
+    background: none;
+    color: #FFF;
+    font-size: 15px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    position: relative;
+  }
+  
+  body form input:focus {
+    outline: 1px solid var(--color-text);
+  }
+  
+  body form button {
+    position: absolute;
+    padding: 10px;
+    background: none;
+    border: none;
+    margin-right: 10px;
+  }
+  
+  
+  table{
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    display: table;
+    margin-left: auto; 
+    margin-right: auto;
+    text-align: center;
+  }
+  
+  table thead tr th{
+    padding: 16px;
+  }
+  
+  table tbody tr td{
+    padding: 16px;
+  }
+  
+  table tbody tr td div svg:hover{
+    opacity: 70%;
+  }
+  
+  table tbody tr:nth-child(odd) {
+    background-color: var(--bg-secundary);
+  }
+  
