@@ -10,10 +10,15 @@ class Test
       {
         result_token: exam['result_token'],
         result_date: exam['result_date'],
-        cpf: exam['patient_cpf'],
-        name: exam['patient_name'],
-        email: exam['patient_email'],
-        birthday: exam['patient_birth_date'],
+        patient:{
+          cpf: exam['patient_cpf'],
+          name: exam['patient_name'],
+          email: exam['patient_email'],
+          birthday: exam['patient_birth_date'],
+          address: exam['patient_address'],
+          city: exam['patient_city'],
+          state: exam['patient_state'],
+        },
         doctor:{
           crm: exam['doctor_crm'],
           crm_state: exam['doctor_state_crm'],
@@ -36,7 +41,9 @@ class Test
 
   def self.all_json
     postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
-    exams = postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
+    exams = postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, 
+                                    patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
+                                    patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state,
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
                                     patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id').to_a
@@ -46,6 +53,7 @@ class Test
   def self.find(token)
     postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
     exams = postgresdb.exec('SELECT exams.result_token AS result_token, exams.date AS result_date, patients.cpf AS patient_cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date AS patient_birth_date, 
+                                    patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state,
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
                                     patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id WHERE result_token = $1', [token]).to_a

@@ -5,7 +5,8 @@ require 'json'
 require_relative 'test'
 
 get '/index' do
-  File.open('index.html')
+  content_type :html
+  File.open('views/index.html')
 end
 
 get '/tests' do
