@@ -1,38 +1,7 @@
 require 'pg'
 require 'csv'
 
-HOST = 'postgresdb'
-USER = 'admin'
-PASSWORD = 'admin123'
-$postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
-
-$postgresdb.exec("CREATE TABLE IF NOT EXISTS patients (id SERIAL PRIMARY KEY, 
-                                             cpf VARCHAR, 
-                                             name VARCHAR, 
-                                             email VARCHAR, 
-                                             birth_date VARCHAR, 
-                                             address VARCHAR, 
-                                             city VARCHAR, 
-                                             state VARCHAR)")
-
-$postgresdb.exec("CREATE TABLE IF NOT EXISTS doctors (id SERIAL PRIMARY KEY, 
-                                             crm VARCHAR, 
-                                             state_crm VARCHAR(2), 
-                                             name VARCHAR, 
-                                             email VARCHAR)")
-
-$postgresdb.exec("CREATE TABLE IF NOT EXISTS exams (id SERIAL,
-                                             result_token VARCHAR PRIMARY KEY, 
-                                             patient_id SERIAL REFERENCES patients(id),
-                                             doctor_id SERIAL REFERENCES doctors(id),
-                                             date VARCHAR)")
-
-$postgresdb.exec("CREATE TABLE IF NOT EXISTS types (id SERIAL,
-                                             result_token_exam VARCHAR REFERENCES exams(result_token), 
-                                             type VARCHAR, 
-                                             limits_type VARCHAR, 
-                                             result_type VARCHAR)")
-                                             
+$postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)                                        
 
 def patient_insert(patient)
   $postgresdb.exec('INSERT INTO patients(cpf, name, email, birth_date, address, city, state) 
@@ -68,34 +37,48 @@ def doctor_find(crm)
 end
 
 def exam_find(token)
-  $postgresdb.exec('SELECT * FROM exams WHERE result_token = 1$', [token]).to_a
+  $postgresdb.exec('SELECT * FROM exams WHERE result_token = $1', [token]).to_a
 end
 
-rows = CSV.read("./data.csv", col_sep: ';')
-columns = rows.shift
+def format_csv(csv)
 
-rows.map! do |row|
-  row.each_with_object({}).with_index do |(cell, acc), idx|
-    column = columns[idx]
-    acc[column] = cell
+  if csv.class == String
+    rows = CSV.parse(csv, col_sep: ';')
+  else
+    rows = CSV.read("./data.csv", col_sep: ';')
+  end 
+
+  columns = rows.shift
+  
+  rows.map! do |row|
+    row.each_with_object({}).with_index do |(cell, acc), idx|
+      column = columns[idx]
+      acc[column] = cell
+    end
   end
+  rows
 end
 
-rows.each do |row|
-  patient = patient_find(row['cpf'])
-  doctor = doctor_find(row['crm médico'])
-  exam = exam_find(row['token resultado exame'])
-
-  if patient.empty?   
-    patient_insert(row)
+def insert_data(params)
+  rows = format_csv(params)
+  
+  rows.each do |row|
     patient = patient_find(row['cpf'])
-  end
-
-  if doctor.empty?
-    doctor_insert(row)
     doctor = doctor_find(row['crm médico'])
-  end  
+    exam = exam_find(row['token resultado exame'])
+       
+    if patient.empty?   
+      patient_insert(row)
+      patient = patient_find(row['cpf'])
+    end
 
-  exam_insert(row, patient, doctor) if exam.empty? 
-  type_insert(row) 
+    if doctor.empty?
+      doctor_insert(row)
+      doctor = doctor_find(row['crm médico'])
+    end  
+    
+    exam_insert(row, patient, doctor) if exam.empty? 
+    type_insert(row) 
+  end
 end
+

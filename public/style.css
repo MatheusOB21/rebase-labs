@@ -18,6 +18,11 @@ body{
   margin-right: 20px;
 }
 
+h1{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 body .conteiner-lg{
   color: var(--color-text);
   text-align: center;
@@ -63,7 +68,6 @@ body form button {
   margin-right: 10px;
 }
 
-
 table{
   color: #FFF;
   font-family: Montserrat;
@@ -78,11 +82,11 @@ table{
 }
 
 table thead tr th{
-  padding: 16px;
+  padding: 30px;
 }
 
 table tbody tr td{
-  padding: 16px;
+  padding: 30px;
 }
 
 table tbody tr td div svg:hover{

@@ -7,6 +7,9 @@ const token = urlParams.get('token')
 console.log(token);
 const url = `http://0.0.0.0:3000/tests/${token}`;
 
+const h1 = document.querySelector('h1');
+h1.textContent = `Detalhes do Exame: ${token}`
+
 fetch(url).
   then((response) => response.json()).
   then((data) => {
@@ -29,7 +32,6 @@ fetch(url).
         fragment1.appendChild(trInfo);
       };
  
-
       const trDoctor = document.createElement('tr')
       for(let [key, value] of Object.entries(doctor)){
         trDoctor.appendChild(createTd(value));

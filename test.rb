@@ -59,4 +59,9 @@ class Test
                                     patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id WHERE result_token = $1', [token]).to_a
     format_json(postgresdb, exams)
   end
+
+  def self.import_tests(csv)
+    require_relative 'import_from_csv'
+    insert_data(csv)
+  end
 end
