@@ -41,21 +41,18 @@ def exam_find(token)
 end
 
 def format_csv(csv)
-
-  if csv.class == String
-    rows = CSV.parse(csv, col_sep: ';')
-  else
-    rows = CSV.read("./data.csv", col_sep: ';')
-  end 
+  rows = CSV.parse(csv, col_sep: ';', encoding: "UTF-8")
 
   columns = rows.shift
-  
+
   rows.map! do |row|
     row.each_with_object({}).with_index do |(cell, acc), idx|
       column = columns[idx]
+      
       acc[column] = cell
     end
   end
+
   rows
 end
 

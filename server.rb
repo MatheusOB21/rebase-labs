@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'rack/handler/puma'
 require 'pg'
+require 'csv'
 require 'json'
 require_relative 'db'
 require_relative 'test'
@@ -32,13 +33,13 @@ get '/tests/:token' do
 end
 
 post '/import' do
-  csv = params['csv']
+  csv = request.body.read
   begin
     Test.import_tests(csv)
-    "OK"  
   rescue StandardError => e
     puts "Rescued: #{e.inspect}"    
   end
+  redirect '/index'
 end
 
 Rack::Handler::Puma.run(

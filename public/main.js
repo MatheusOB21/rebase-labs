@@ -61,10 +61,7 @@ function createTd(params) {
 
 function creatDetailsElement(tr, exam){
   const div = document.createElement('div');
-  div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="1.25em" viewBox="0 0 512 512">
-                    <!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                    <style>svg{fill:#624de3}</style>
-                    <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/></svg>`;
+  div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>`;
   div.addEventListener('click', function() {
     window.location.href = `http://0.0.0.0:3000/index/details?token=${exam['result_token']}`;
   })
@@ -75,7 +72,7 @@ function creatDetailsElement(tr, exam){
 }
 
 function searchExam(){
-  value = document.querySelector('input').value;
+  value = document.querySelector('input#search').value;
   tbody = document.querySelector('tbody');
 
   if(value != ''){
@@ -86,9 +83,22 @@ function searchExam(){
     tbody.innerHTML = ''
     setData(url_all)
   }
-
-  console.log(value);
-  console.log(searchUrl);
 }
+
+function inputFile(){
+  document.getElementById('input_import').click()
+}
+
+async function sentPost(event){
+  const file = event.target.files.item(0)
+  const text = await file.text();
+  await fetch(`http://0.0.0.0:3000/import`, {
+    method: 'POST',
+    body: `${text}`
+  }).then(() => {
+    location.reload()
+  })
+}
+
 
 window.onload = setData(url_all);
