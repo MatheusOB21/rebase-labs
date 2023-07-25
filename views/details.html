@@ -1,8 +1,32 @@
 <head>
   <title>Testes Médicos</title>
-  <link rel="stylesheet" href="details.css">
+  <link rel="stylesheet" href="../details/details.css">
+  <link rel="icon" type="image/x-icon" href="/images/logo.svg">
 </head>
 <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="http://0.0.0.0:3000/index">
+          <img src="../images/logo.svg">
+          Rebase Labs
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/index">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests">Exames</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests/format=json">Exames em JSON</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
   <div class="conteiner-lg">
     <h1>Detalhes do Exame</h1>
     <table id="examInfo">
@@ -52,6 +76,6 @@
         </tbody>
       </table>
     <div>
-    <script src="details.js"></script>
+    <script src="../details/details.js"></script>
   </div>
 </body>
