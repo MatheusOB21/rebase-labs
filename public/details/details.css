@@ -16,6 +16,31 @@ h1{
   padding-bottom: 15px;
 }
 
+body header nav div ul{
+  list-style-type: none;
+}
+
+body{
+  background-color: var(--bg-primary);
+  font-family: Montserrat;
+  margin: 0px;
+}
+
+body .conteiner-lg{
+  color: var(--color-text);
+  text-align: center;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+div#comeBackButton{
+  display: flex;
+  align-items: center;
+  margin-bottom: 1%;
+  font-weight: bold;
+  font-size: larger;
+}
+
 nav div.container-fluid{
   display: flex;
   align-items: center;
@@ -58,24 +83,6 @@ a.navbar-brand{
 
 .nav-item:hover{
   background-color: var(--bg-secundary)
-}
-
-body header nav div ul{
-  list-style-type: none;
-}
-
-
-body{
-  background-color: var(--bg-primary);
-  font-family: Montserrat;
-  margin: 0px;
-}
-
-body .conteiner-lg{
-  color: var(--color-text);
-  text-align: center;
-  margin-left: 80px;
-  margin-right: 80px;
 }
 
 table{
