@@ -44,6 +44,10 @@ def exam_find(token)
   $postgresdb.exec('SELECT * FROM exams WHERE result_token = $1', [token]).to_a
 end
 
+def type_find(token, type)
+  $postgresdb.exec('SELECT * FROM types WHERE result_token_exam = $1 AND type = $2 ', [token, type]).to_a
+end
+
 def format_csv(csv)
   rows = CSV.parse(csv, col_sep: ';', encoding: "UTF-8")
 
@@ -67,6 +71,7 @@ def insert_data(params)
     patient = patient_find(row['cpf'])
     doctor = doctor_find(row['crm médico'])
     exam = exam_find(row['token resultado exame'])
+    type = type_find(row['token resultado exame'], row['tipo exame'])
        
     if patient.empty?   
       patient_insert(row)
@@ -79,7 +84,8 @@ def insert_data(params)
     end  
     
     exam_insert(row, patient, doctor) if exam.empty? 
-    type_insert(row) 
+
+    type_insert(row) if type.empty?
   end
 end
 
