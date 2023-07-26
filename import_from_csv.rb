@@ -1,6 +1,10 @@
 require 'pg'
 require 'csv'
 
+HOST = 'postgresdb'
+USER = 'admin'
+PASSWORD = 'admin123'
+
 $postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)                                        
 
 def patient_insert(patient)

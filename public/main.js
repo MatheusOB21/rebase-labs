@@ -94,7 +94,11 @@ async function sentPost(event){
   const text = await file.text();
   await fetch(`http://0.0.0.0:3000/import`, {
     method: 'POST',
-    body: `${text}`
+    body: `${text}`,
+    headers: {
+      "Content-Type": "text/html;",
+      "charset": "UTF-8"
+    }   
   }).then(() => {
     location.reload()
   })

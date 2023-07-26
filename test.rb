@@ -1,6 +1,8 @@
 require 'pg'
+require 'sidekiq'
 
-class Test
+class Test  
+  include Sidekiq::Worker
   HOST = 'postgresdb'
   USER = 'admin'
   PASSWORD = 'admin123'
@@ -60,7 +62,7 @@ class Test
     format_json(postgresdb, exams)
   end
 
-  def self.import_tests(csv)
+  def perform(csv)
     require_relative 'import_from_csv'
     insert_data(csv)
   end
