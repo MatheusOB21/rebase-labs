@@ -6,6 +6,7 @@ require 'json'
 require 'redis'
 require_relative 'db'
 require_relative 'test'
+require_relative 'worker'
 
 #Web
 get '/index' do
@@ -37,7 +38,7 @@ end
 
 post '/import' do
   csv = request.body.read
-  Test.perform_async(csv)
+  Worker.perform_async(csv)
 end
 
 Rack::Handler::Puma.run(

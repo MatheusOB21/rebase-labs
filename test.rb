@@ -1,8 +1,6 @@
 require 'pg'
-require 'sidekiq'
 
 class Test  
-  include Sidekiq::Worker
   HOST = 'postgresdb'
   USER = 'admin'
   PASSWORD = 'admin123'
@@ -60,10 +58,5 @@ class Test
                                     FROM exams JOIN patients ON 
                                     patients.cpf = exams.patient_cpf JOIN doctors ON doctors.crm = exams.doctor_crm WHERE result_token = $1', [token]).to_a
     format_json(postgresdb, exams)
-  end
-
-  def perform(csv)
-    require_relative 'import_from_csv'
-    insert_data(csv)
   end
 end

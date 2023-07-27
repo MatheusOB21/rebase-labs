@@ -26,22 +26,6 @@ function setData(url){
         };
         
         creatDetailsElement(tr, exam);
-  
-        // for(let [key, value] of Object.entries(doctor)){
-        //   tr.appendChild(createTd(value));
-        //   fragment.appendChild(tr);
-        // };
-
-  
-        // const tr_details = document.createElement('tr')
-        // exam_tests.forEach(element => {
-        //   tr2 = document.createElement('td')
-        //   for(let [key, value] of Object.entries(element)){
-        //     tr2.innerHTML = `${element['type']}`;
-        //   };
-        //   tr_details.appendChild(tr2);
-        //   fragment.appendChild(tr_details);
-        // });
 
       })
     }).

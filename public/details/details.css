@@ -8,6 +8,7 @@
   --bg-secundary: #26264F;
   
   --color-text: #FFF;
+  --color-primary: #312674;
   --color-secundary: #624DE3;
 }
 
@@ -95,12 +96,15 @@ table{
   display: table;
   margin-left: auto; 
   margin-right: auto;
+  margin-bottom: 10px;
+  margin-top: 10px;
   text-align: center;
   border: 1px;
 }
 
 table thead tr th{
   padding: 16px;
+  background-color: var(--color-primary);
 }
 
 table tbody tr td{
@@ -113,4 +117,8 @@ table tbody tr td div svg:hover{
 
 tr:nth-child(odd) {
   background-color: var(--bg-secundary);
+}
+
+table#testsInfo th{
+  background-color: var(--color-primary);
 }

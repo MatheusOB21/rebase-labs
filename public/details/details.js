@@ -47,7 +47,7 @@ fetch(url).
       thType.innerHTML = 'Exame ';
       trType.appendChild(thType);
 
-      const trLimit = document.createElement('tr')
+      const trLimit = document.createElement('tr');
       const thLimit = document.createElement('th');
       thLimit.innerHTML = 'Limites ';
       trLimit.appendChild(thLimit);
@@ -60,6 +60,8 @@ fetch(url).
       exam_tests.forEach(element => {
         trType.appendChild(createTd(element['type']));
         trLimit.appendChild(createTd(element['limits_type']));
+        // element['limits_type'].split('-').map(el => { return parseInt(el)});
+        // parseInt(element['result_type']);
         trResult.appendChild(createTd(element['result_type']));
       });
       trTests.appendChild(trType);
