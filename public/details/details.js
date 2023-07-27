@@ -19,7 +19,7 @@ fetch(url).
       const doctor = exam.doctor;
       const exam_tests = exam.tests;
       const exam_result = {result_token: exam.result_token, result_date: exam.result_date};
-      
+      // Table ExamInfo
       const trInfo = document.createElement('tr');
       for(let [key, value] of Object.entries(exam_result)){
         trInfo.appendChild(createTd(value));
@@ -31,21 +31,41 @@ fetch(url).
         trInfo.appendChild(createTd(value));
         fragment1.appendChild(trInfo);
       };
- 
+      
+      //Table DoctorInfo
       const trDoctor = document.createElement('tr')
       for(let [key, value] of Object.entries(doctor)){
         trDoctor.appendChild(createTd(value));
         fragment2.appendChild(trDoctor);
       };
 
-      exam_tests.forEach(element => {
-        const trTests = document.createElement('tr')
-        for(let [key, value] of Object.entries(element)){
-          trTests.appendChild(createTd(value));
-          fragment3.appendChild(trTests);
-        };
-      });
+      //Table TestsInfo
+      const trTests = document.createElement('tr')
 
+      const trType = document.createElement('tr');
+      const thType = document.createElement('th');
+      thType.innerHTML = 'Exame ';
+      trType.appendChild(thType);
+
+      const trLimit = document.createElement('tr')
+      const thLimit = document.createElement('th');
+      thLimit.innerHTML = 'Limites ';
+      trLimit.appendChild(thLimit);
+      
+      const trResult = document.createElement('tr')
+      const thResult = document.createElement('th');
+      thResult.innerHTML = 'Resultado ';
+      trResult.appendChild(thResult);
+
+      exam_tests.forEach(element => {
+        trType.appendChild(createTd(element['type']));
+        trLimit.appendChild(createTd(element['limits_type']));
+        trResult.appendChild(createTd(element['result_type']));
+      });
+      trTests.appendChild(trType);
+      trTests.appendChild(trLimit);
+      trTests.appendChild(trResult);
+      fragment3.appendChild(trTests);
     })
   }).
   then(() => {
