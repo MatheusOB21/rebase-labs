@@ -38,7 +38,7 @@ class Test
                       doctors.crm AS doctor_crm, doctors.state_crm AS doctor_crm_state, doctors.name AS doctor_name, doctors.email 
                       AS doctor_email, exams.result_token AS exam_result_token, exams.date AS exam_date, types.type AS exam_type, 
                       types.limits_type AS limits_exam_type, types.result_type AS result_exam_type FROM patients JOIN exams ON 
-                      exams.patient_id = patients.id JOIN doctors ON doctors.id = exams.doctor_id JOIN types ON types.result_token_exam = exams.result_token').to_a 
+                      exams.patient_cpf = patients.cpf JOIN doctors ON doctors.crm = exams.doctor_crm JOIN types ON types.result_token_exam = exams.result_token').to_a 
   end
 
   def self.all_json
@@ -48,7 +48,7 @@ class Test
                                     patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state,
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
-                                    patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id').to_a
+                                    patients.cpf = exams.patient_cpf JOIN doctors ON doctors.crm = exams.doctor_crm').to_a
     format_json(postgresdb, exams)
   end
 
@@ -58,7 +58,7 @@ class Test
                                     patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state,
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
-                                    patients.id = exams.patient_id JOIN doctors ON doctors.id = exams.doctor_id WHERE result_token = $1', [token]).to_a
+                                    patients.cpf = exams.patient_cpf JOIN doctors ON doctors.crm = exams.doctor_crm WHERE result_token = $1', [token]).to_a
     format_json(postgresdb, exams)
   end
 

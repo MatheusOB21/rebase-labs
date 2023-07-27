@@ -41,3 +41,5 @@ services:
     environment:
       REDIS_URL: redis://redis:6379/0            
     command: bash -c "bundle exec sidekiq -r /app/test.rb"  
+    depends_on:
+      - redis

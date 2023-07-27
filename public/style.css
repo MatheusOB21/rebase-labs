@@ -30,9 +30,7 @@ nav div.container-fluid{
   padding: 0.5%;
 } a {
   all: unset;  
-}:hover {
-  cursor: pointer;
-} 
+}
 
 a.navbar-brand{
   display: flex;
@@ -63,7 +61,8 @@ a.navbar-brand{
 }
 
 .nav-item:hover{
-  background-color: var(--bg-secundary)
+  background-color: var(--bg-secundary);
+  cursor: pointer;
 }
 
 body header nav div ul{
