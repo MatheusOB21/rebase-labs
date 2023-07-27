@@ -3,9 +3,11 @@ require 'rack/handler/puma'
 require 'pg'
 require 'csv'
 require 'json'
+require 'redis'
 require_relative 'db'
 require_relative 'test'
 
+#Web
 get '/index' do
   content_type :html
   File.open('views/index.html')
@@ -16,6 +18,7 @@ get '/index/details' do
   File.open('views/details.html')
 end
 
+# API
 get '/tests' do
   content_type :json
   response = Test.all.to_json
@@ -34,12 +37,7 @@ end
 
 post '/import' do
   csv = request.body.read
-  begin
-    Test.import_tests(csv)
-  rescue StandardError => e
-    puts "Rescued: #{e.inspect}"    
-  end
-  redirect '/index'
+  Test.perform_async(csv)
 end
 
 Rack::Handler::Puma.run(

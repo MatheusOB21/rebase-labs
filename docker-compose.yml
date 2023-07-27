@@ -1,18 +1,10 @@
 version: '3.9'
 
 services:
-  rebase-labs:
-    container_name: rebaselabs
-    image: ruby
-    working_dir: /app
-    volumes:
-      - .:/app
-      - ./gems:/usr/local/bundle
-    command: bash -c "bundle && ruby server.rb"
-    ports:
-     - "3000:3000" 
-    depends_on:
-     - postgresdb
+  
+  redis:
+    container_name: redis
+    image: redis
   
   postgresdb:
     container_name: postgreesdb
@@ -22,3 +14,32 @@ services:
       POSTGRES_PASSWORD: admin123
     volumes: 
     - ./postgres-data:/var/lib/postgresql/data
+  
+  rebase-labs:
+    container_name: rebaselabs
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./gems:/usr/local/bundle
+    command: bash -c "bundle && ruby server.rb"
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    ports:
+     - "3000:3000" 
+    depends_on:
+     - postgresdb
+     - redis
+
+  sidekiq:
+    container_name: sidekiq
+    image: ruby
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./gems:/usr/local/bundle
+    environment:
+      REDIS_URL: redis://redis:6379/0            
+    command: bash -c "bundle exec sidekiq -r /app/test.rb"  
+    depends_on:
+      - redis

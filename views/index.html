@@ -1,15 +1,44 @@
 <head>
   <title>Testes Médicos</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="/images/logo.svg">
+  <meta charset="UTF-8">
 </head>
 <body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="http://0.0.0.0:3000/index">
+          <img src="images/logo.svg">
+          Rebase Labs
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/index">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests">Exames</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests/format=json">Exames em JSON</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
   <div class="conteiner-lg">
     <h1>Testes Médicos</h1>
 
     <div id="forms">
 
       <input id="input_import" type="file" name="csv" accept=".csv" onchange="sentPost(event)" hidden>
-      <button id="btnimport" onclick="inputFile()"> + Importar CSV</button>
+      <button id="btnimport" onclick="inputFile()">
+        <svg xmlns="http://www.w3.org/2000/svg" style="width: 15px;" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM160 240c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v48h48c8.8 0 16 7.2 16 16v32c0 8.8-7.2 16-16 16H224v48c0 8.8-7.2 16-16 16H176c-8.8 0-16-7.2-16-16V352H112c-8.8 0-16-7.2-16-16V304c0-8.8 7.2-16 16-16h48V240z" fill="#ffffff"/></svg>
+        Importar CSV
+      </button>
 
       <form id="search" onsubmit="return false">
         <label for="search">Pesquisar</label>

@@ -1,10 +1,40 @@
 <head>
   <title>Testes Médicos</title>
-  <link rel="stylesheet" href="details.css">
+  <link rel="stylesheet" href="../details/details.css">
+  <link rel="icon" type="image/x-icon" href="/images/logo.svg">
 </head>
 <body>
-  <div class="conteiner-lg">
+  <header>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="http://0.0.0.0:3000/index">
+          <img src="../images/logo.svg">
+          Rebase Labs
+        </a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/index">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests">Exames</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="http://0.0.0.0:3000/tests/format=json">Exames em JSON</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <div class="conteiner-lg">   
     <h1>Detalhes do Exame</h1>
+    <div id="comeBackButton">
+      <a href="http://0.0.0.0:3000/index">
+        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><style>svg{fill:#ffffff}</style><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+        Voltar 
+      </a>
+    </div>
     <table id="examInfo">
       <thead>
         <tr>
@@ -52,6 +82,6 @@
         </tbody>
       </table>
     <div>
-    <script src="details.js"></script>
+    <script src="../details/details.js"></script>
   </div>
 </body>

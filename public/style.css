@@ -14,13 +14,59 @@
 body{
   background-color: var(--bg-primary);
   font-family: Montserrat;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 0px;
 }
 
 h1{
   padding-top: 15px;
   padding-bottom: 15px;
+}
+
+nav div.container-fluid{
+  display: flex;
+  align-items: center;
+  background-color: var(--color-secundary);
+  color: var(--color-text);
+  padding: 0.5%;
+} a {
+  all: unset;  
+}
+
+a.navbar-brand{
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+  width: 15rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+} img {
+  width: 2.5rem;
+  margin-right: 5%;
+}
+
+.navbar-nav{
+  display: flex;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-left: 10px;
+  font-size: 1.3rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.nav-item:hover{
+  background-color: var(--bg-secundary);
+  cursor: pointer;
+}
+
+body header nav div ul{
+  list-style-type: none;
 }
 
 body .conteiner-lg{
@@ -35,6 +81,7 @@ body div#forms{
   align-items: center;
   justify-content: flex-end;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 body div#forms form{
@@ -45,7 +92,21 @@ body div#forms form{
   margin-bottom: 0px;
 }
 
-body  div#forms form input{
+body div#forms button#btnimport{
+  background: var(--color-secundary);
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #FFF;
+  border: none;
+}
+
+body div#forms button#btnimport:hover{
+  cursor: pointer;
+}
+
+
+body  div#forms form input#search{
   max-width: 250px;
   margin: 5px;
   padding: 8px 9px;

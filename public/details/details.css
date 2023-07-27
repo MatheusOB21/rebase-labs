@@ -16,11 +16,14 @@ h1{
   padding-bottom: 15px;
 }
 
+body header nav div ul{
+  list-style-type: none;
+}
+
 body{
   background-color: var(--bg-primary);
   font-family: Montserrat;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 0px;
 }
 
 body .conteiner-lg{
@@ -30,44 +33,57 @@ body .conteiner-lg{
   margin-right: 80px;
 }
 
-body form{
+div#comeBackButton{
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  font-size: 20px;
+  margin-bottom: 1%;
+  font-weight: bold;
+  font-size: larger;
 }
 
-body form input{
-  max-width: 250px;
-  margin: 5px;
-  padding: 8px 9px;
+nav div.container-fluid{
+  display: flex;
   align-items: center;
-  gap: 8px;
-  flex: 1 0 0;
-  border-radius: 8px;
-  border: 1px solid var(--color-text);
-  background: none;
-  color: #FFF;
-  font-size: 15px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  position: relative;
+  background-color: var(--color-secundary);
+  color: var(--color-text);
+  padding: 0.5%;
+} a {
+  all: unset;  
+}:hover {
+  cursor: pointer;
+} 
+
+a.navbar-brand{
+  display: flex;
+  align-items: center;
+  margin-left: 2rem;
+  width: 15rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+} img {
+  width: 2.5rem;
+  margin-right: 5%;
 }
 
-body form input:focus {
-  outline: 1px solid var(--color-text);
+.navbar-nav{
+  display: flex;
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
-body form button {
-  position: absolute;
-  padding: 10px;
-  background: none;
-  border: none;
-  margin-right: 10px;
+.nav-item {
+  margin-left: 10px;
+  font-size: 1.3rem;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
+.nav-item:hover{
+  background-color: var(--bg-secundary)
+}
 
 table{
   color: #FFF;
