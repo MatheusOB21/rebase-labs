@@ -1,6 +1,7 @@
 require 'pg'
 
 class DB
+
 	def self.create_tables(db)
 		db.exec("CREATE TABLE IF NOT EXISTS patients(id SERIAL PRIMARY KEY, 
 																													cpf VARCHAR UNIQUE, 

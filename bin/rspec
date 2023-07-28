@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run\
+  --rm\
+  --name postgres-database-test\
+  -e POSTGRES_user=admin\
+  -e POSTGRES_PASSWORD=admin\
+  --network rebase-network\
+  postgres

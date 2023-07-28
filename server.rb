@@ -65,8 +65,10 @@ post '/import' do
   end
 end
 
-Rack::Handler::Puma.run(
-  Sinatra::Application,
-  Port: 3000,
-  Host: '0.0.0.0'
-)
+if ENV['APP_ENV'] != 'test'
+  Rack::Handler::Puma.run(
+    Sinatra::Application,
+    Port: 3000,
+    Host: '0.0.0.0'
+  )
+end
