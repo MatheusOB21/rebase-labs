@@ -20,23 +20,49 @@ end
 # API
 get '/tests' do
   content_type :json
-  response = Test.all.to_json
+  response = Test.all
+  if response.any?
+    status 200
+    response.to_json
+  else
+    status 404
+    {detail: "Not found"}.to_json
+  end
 end
 
 get '/tests/format=json' do
   content_type :json
-  response = Test.all_json.to_json
+  response = Test.all_json
+  if response.any?
+    status 200
+    response.to_json
+  else
+    status 404
+    {detail: "Not found"}.to_json
+  end
 end
 
 get '/tests/:token' do
   content_type :json
   response = Test.find(params['token'])
-  response.first.to_json
+  if response.any?
+    status 200
+    response.first.to_json
+  else
+    status 404
+    {detail: "Not found"}.to_json
+  end
 end
 
 post '/import' do
-  csv = request.body.read
-  Worker.perform_async(csv)
+  begin
+    csv = request.body.read
+    Worker.perform_async(csv)
+    status 201
+  rescue => exception
+    status 404
+    {detail: "Not created, error internal: #{exception}"}.to_json
+  end
 end
 
 Rack::Handler::Puma.run(
