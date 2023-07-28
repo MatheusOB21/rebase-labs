@@ -88,5 +88,4 @@ async function sentPost(event){
   })
 }
 
-
 window.onload = setData(url_all);

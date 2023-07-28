@@ -4,7 +4,12 @@ require_relative 'db'
 
 HOST = 'postgresdb'
 USER = 'admin'
-PASSWORD = 'admin123'                                
+PASSWORD = 'admin123'  
+DBNAME = ''   
+
+if ENV['APP_ENV'] == 'test'
+  DBNAME = 'test'
+end
 
 class ImportCSV
   def self.format_csv(csv)
@@ -25,7 +30,7 @@ class ImportCSV
 
   def self.insert_data(params)
     rows = format_csv(params)
-    postgresdb = PG.connect(host: HOST, user: USER, password: PASSWORD)
+    postgresdb = PG.connect(host: HOST, dbname: DBNAME, user: USER, password: PASSWORD)
     
     DB.create_tables(postgresdb)       
 

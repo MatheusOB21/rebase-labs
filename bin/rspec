@@ -6,4 +6,6 @@ docker run\
   -e POSTGRES_user=admin\
   -e POSTGRES_PASSWORD=admin\
   --network rebase-network\
-  postgres
+  bash -c "rspec /spec"
+
+docker donw postgres-database-test

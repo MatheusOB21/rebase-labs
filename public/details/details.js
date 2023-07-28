@@ -4,7 +4,6 @@ const fragment3 = new DocumentFragment();
 const queryString= window.location.search
 const urlParams = new URLSearchParams(queryString);
 const token = urlParams.get('token')
-console.log(token);
 const url = `http://0.0.0.0:3000/tests/${token}`;
 
 const h1 = document.querySelector('h1');
@@ -19,6 +18,7 @@ fetch(url).
       const doctor = exam.doctor;
       const exam_tests = exam.tests;
       const exam_result = {result_token: exam.result_token, result_date: exam.result_date};
+      
       // Table ExamInfo
       const trInfo = document.createElement('tr');
       for(let [key, value] of Object.entries(exam_result)){

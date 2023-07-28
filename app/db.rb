@@ -30,6 +30,12 @@ class DB
 																												limits_type VARCHAR, 
 																												result_type VARCHAR,
 																												UNIQUE (result_token_exam, type))")
+		db.close																										
+	end
+
+	def self.drop_tables(db)
+		db.exec('DROP TABLE types; DROP TABLE exams; DROP TABLE doctors; DROP TABLE patients;')
+		db.close
 	end
 
 	def self.patient_insert(patient, db)
@@ -37,23 +43,27 @@ class DB
 		VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING', 
 		[patient['cpf'], patient['nome paciente'], patient['email paciente'], patient['data nascimento paciente'], 
 		 patient['endereço/rua paciente'], patient['cidade paciente'], patient['estado patiente']])
+		db.close
 	end
 
 	def self.doctor_insert(doctor, db)
 		db.exec('INSERT INTO doctors(crm, state_crm, name, email) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[doctor['crm médico'], doctor['crm médico estado'] , doctor['nome médico'], doctor['email médico']])
+		db.close
 	end
 
 	def self.exam_insert(exam, db)
 		db.exec('INSERT INTO exams(result_token, date, patient_cpf, doctor_crm) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[exam['token resultado exame'], exam['data exame'], exam['cpf'], exam['crm médico']])
+		db.close
 	end
 
 	def self.type_insert(type, db)
 		db.exec('INSERT INTO types(result_token_exam, type, limits_type, result_type) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[type['token resultado exame'], type['tipo exame'], type['limites tipo exame'], type['resultado tipo exame']])
+		db.close
 	end
 end
