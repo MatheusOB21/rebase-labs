@@ -3,10 +3,8 @@ require 'rack/handler/puma'
 require 'pg'
 require 'csv'
 require 'json'
-require 'redis'
-require_relative 'db'
-require_relative 'test'
-require_relative 'worker'
+require_relative 'app/test'
+require_relative 'app/worker'
 
 #Web
 get '/index' do
