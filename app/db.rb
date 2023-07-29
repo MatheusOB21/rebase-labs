@@ -41,8 +41,7 @@ class DB
 	end
 
 	def self.delete_data(db)
-		db.exec('DELETE FROM types; DELETE FROM exams; DELETE FROM doctors; DELETE FROM patients;')
-		db.close
+		db.exec('DROP TABLE types; DROP TABLE exams; DROP TABLE doctors; DROP TABLE patients;')
 	end
 
 	def self.patient_insert(patient, db)

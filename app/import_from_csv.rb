@@ -17,11 +17,12 @@ class ImportCSV
     rows
   end
 
-  def self.insert_data(params, postgresdb)
-    rows = format_csv(params)
-    
-    DB.create_tables(postgresdb)       
+  def self.create_tables(postgresdb)
+    DB.create_tables(postgresdb)   
+  end
 
+  def self.insert_data(params, postgresdb)
+    rows = format_csv(params)    
     rows.each do |row|
       DB.patient_insert(row, postgresdb)
       DB.doctor_insert(row, postgresdb)

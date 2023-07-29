@@ -13,6 +13,7 @@ class Worker
     end
 
     postgresdb = PG.connect(host: host, dbname: dbname, user: user, password: password)
+    ImportCSV.create_tables(postgresdb)
     ImportCSV.insert_data(csv, postgresdb)
     postgresdb.close
   end
