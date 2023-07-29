@@ -1,10 +1,13 @@
+ENV['APP_ENV'] = 'test'
+
 require 'rspec'
 require 'rack/test'
 require_relative '../app/db'
-require 'pg'
 
 begin
-  PG.connect(host: 'postgresdb', user: 'admin', password: 'admin123').exec('CREATE DATABASE test').close 
+  db = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin123')
+  db.exec('CREATE DATABASE test')
+  db.close
 rescue => exception
   puts "NOTICE:  Database teste já existe"
 end

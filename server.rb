@@ -1,8 +1,7 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require 'pg'
-require 'csv'
 require 'json'
+require_relative 'app/import_from_csv'
 require_relative 'app/test'
 require_relative 'app/worker'
 
@@ -57,11 +56,13 @@ end
 post '/import' do
   begin
     csv = request.body.read
+    puts csv
     Worker.perform_async(csv)
     status 201
   rescue => exception
     status 404
     {detail: "Not created, error internal: #{exception}"}.to_json
+    puts "NOTICE:  ERROR IMPORT"
   end
 end
 

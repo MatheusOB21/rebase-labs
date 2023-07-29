@@ -1,6 +1,14 @@
 require 'pg'
 
 class DB
+	def self.select_all_tables(db)
+		db.exec('SELECT patients.cpf AS cpf, patients.name AS patient_name, patients.email AS patient_email, patients.birth_date 
+			AS patient_birth_date, patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state, 
+			doctors.crm AS doctor_crm, doctors.state_crm AS doctor_crm_state, doctors.name AS doctor_name, doctors.email 
+			AS doctor_email, exams.result_token AS exam_result_token, exams.date AS exam_date, types.type AS exam_type, 
+			types.limits_type AS limits_exam_type, types.result_type AS result_exam_type FROM patients JOIN exams ON 
+			exams.patient_cpf = patients.cpf JOIN doctors ON doctors.crm = exams.doctor_crm JOIN types ON types.result_token_exam = exams.result_token')
+	end
 
 	def self.create_tables(db)
 		db.exec("CREATE TABLE IF NOT EXISTS patients(id SERIAL PRIMARY KEY, 
@@ -29,12 +37,11 @@ class DB
 																												type VARCHAR, 
 																												limits_type VARCHAR, 
 																												result_type VARCHAR,
-																												UNIQUE (result_token_exam, type))")
-		db.close																										
+																												UNIQUE (result_token_exam, type))")																									
 	end
 
-	def self.drop_tables(db)
-		db.exec('DROP TABLE types; DROP TABLE exams; DROP TABLE doctors; DROP TABLE patients;')
+	def self.delete_data(db)
+		db.exec('DELETE FROM types; DELETE FROM exams; DELETE FROM doctors; DELETE FROM patients;')
 		db.close
 	end
 
@@ -43,27 +50,23 @@ class DB
 		VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING', 
 		[patient['cpf'], patient['nome paciente'], patient['email paciente'], patient['data nascimento paciente'], 
 		 patient['endereço/rua paciente'], patient['cidade paciente'], patient['estado patiente']])
-		db.close
 	end
 
 	def self.doctor_insert(doctor, db)
 		db.exec('INSERT INTO doctors(crm, state_crm, name, email) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[doctor['crm médico'], doctor['crm médico estado'] , doctor['nome médico'], doctor['email médico']])
-		db.close
 	end
 
 	def self.exam_insert(exam, db)
 		db.exec('INSERT INTO exams(result_token, date, patient_cpf, doctor_crm) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[exam['token resultado exame'], exam['data exame'], exam['cpf'], exam['crm médico']])
-		db.close
 	end
 
 	def self.type_insert(type, db)
 		db.exec('INSERT INTO types(result_token_exam, type, limits_type, result_type) 
 		VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING', 
 		[type['token resultado exame'], type['tipo exame'], type['limites tipo exame'], type['resultado tipo exame']])
-		db.close
 	end
 end
