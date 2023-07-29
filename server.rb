@@ -56,7 +56,6 @@ end
 post '/import' do
   begin
     csv = request.body.read
-    puts csv
     Worker.perform_async(csv)
     status 201
   rescue => exception

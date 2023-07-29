@@ -11,7 +11,7 @@ begin
 rescue => exception
   puts "NOTICE:  Database teste já existe"
 end
- 
+
 DB.create_tables(PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123'))
 
 RSpec.configure do |conf|
