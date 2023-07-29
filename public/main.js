@@ -73,7 +73,7 @@ function inputFile(){
   document.getElementById('input_import').click()
 }
 
-async function sentPost(event){
+async function sendPost(event){
   const file = event.target.files.item(0)
   const text = await file.text();
   await fetch(`http://0.0.0.0:3000/import`, {

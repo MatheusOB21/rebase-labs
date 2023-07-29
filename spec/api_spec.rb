@@ -15,8 +15,8 @@ RSpec.describe 'API' do
     expect(last_response.body).to include('Not found')
   end
 
-  it "/tests retorna 202 e todos os exames cadastrados" do
-    csv = File.open("support/data_example.csv")
+  it "/tests retorna 200 e todos os exames cadastrados" do
+    csv = File.open("spec/support/data_example.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
     ImportCSV.insert_data(csv, pg)
     pg.close
@@ -43,8 +43,8 @@ RSpec.describe 'API' do
     expect(JSON.parse(last_response.body).first.keys).to include('result_exam_type')
   end
   
-  it "/tests/format=json retorna 202 e todos os exames cadastrados, com formato JSON" do
-    csv = File.open("support/data_example.csv")
+  it "/tests/format=json e retorna 200 e todos os exames cadastrados, com formato JSON" do
+    csv = File.open("spec/support/data_example.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
     ImportCSV.insert_data(csv, pg)
     pg.close
@@ -52,7 +52,37 @@ RSpec.describe 'API' do
     get '/tests/format=json'
 
     expect(last_response.status).to eq 200
-    expect(last_response.body).to include('banana')
+    expect(last_response.body).to include('ADFZ17')
     expect(last_response.body).to include('OX1I67')
+    expect(JSON.parse(last_response.body).class).to eq Array
+    expect(JSON.parse(last_response.body).first.keys).to include('result_token')
+    expect(JSON.parse(last_response.body).first.keys).to include('result_date')
+    expect(JSON.parse(last_response.body).first.keys).to include('patient')
+    expect(JSON.parse(last_response.body).first.keys).to include('doctor')
+    expect(JSON.parse(last_response.body).first.keys).to include('tests')
+    expect(JSON.parse(last_response.body).first['tests'].class).to eq Array
+    expect(JSON.parse(last_response.body).first['tests'].class).to eq Array
   end
+  
+  it "/tests/:token retorna detalhes de um exame com formato JSON" do
+    csv = File.open("spec/support/data_example.csv")
+    pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
+    ImportCSV.insert_data(csv, pg)
+    pg.close
+    
+    get '/tests/ADFZ17'
+
+    expect(last_response.status).to eq 200
+    expect(last_response.body).to include('ADFZ17')
+    expect(last_response.body).not_to include('OX1I67')
+    expect(JSON.parse(last_response.body).class).to eq Hash
+    expect(JSON.parse(last_response.body).keys).to include('result_token')
+    expect(JSON.parse(last_response.body).keys).to include('result_date')
+    expect(JSON.parse(last_response.body).keys).to include('patient')
+    expect(JSON.parse(last_response.body).keys).to include('doctor')
+    expect(JSON.parse(last_response.body).keys).to include('tests')
+    expect(JSON.parse(last_response.body)['tests'].class).to eq Array
+    expect(JSON.parse(last_response.body)['tests'].class).to eq Array
+  end
+
 end
