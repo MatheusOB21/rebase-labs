@@ -4,14 +4,14 @@ require 'csv'
 
 describe 'formatação do CSV' do
   it 'deve retornar uma array' do
-    csv = File.open("support/data.csv")
+    csv = File.open("spec/support/data.csv")
 
     result = ImportCSV.format_csv(csv)
 
     expect(result.class).to eq Array
   end
   it 'deve retornar uma com as chaves do CSV' do
-    csv = File.open("support/data.csv")
+    csv = File.open("spec/support/data.csv")
 
     result = ImportCSV.format_csv(csv)
 

@@ -16,7 +16,6 @@ RSpec.describe 'Web' do
     
     get '/index'
 
-    sleep 3
     expect(last_response.status).to eq 200
     expect(last_response.body).to include('ADFZ17')
   end

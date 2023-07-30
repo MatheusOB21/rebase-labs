@@ -46,7 +46,11 @@ get '/tests/:token' do
   response = Test.find(params['token'])
   if response.any?
     status 200
-    response.first.to_json
+    if response.length > 1
+      response.to_json
+    else
+      response.first.to_json
+    end
   else
     status 404
     {detail: "Not found"}.to_json
