@@ -1,6 +1,6 @@
 # Rebase Labs
 
-Uma aplicação usada para a listagem de exames médicos a partir do banco de dados Postgrees, utilizando tecnologias ruby.
+Uma aplicação usada para a listagem de exames médicos a partir do banco de dados PostgreSQL, utilizando tecnologias ruby.
 A aplicação é feita com a gem Sinatra <span style="margin-left: 3px; margin-right: 3px;">[![Gem Version](https://badge.fury.io/rb/sinatra.svg)](https://badge.fury.io/rb/sinatra)</span> e com a execução assíncrona dos dados pela gem Sidekiq <span style="margin-left: 3px; margin-right: 3px;">[![Gem Version](https://badge.fury.io/rb/sidekiq.svg)](https://rubygems.org/gems/sidekiq).</span>
 
 ---
