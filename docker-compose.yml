@@ -40,7 +40,7 @@ services:
       - ./gems:/usr/local/bundle
     environment:
       REDIS_URL: redis://redis:6379/0            
-    command: bash -c "bundle exec sidekiq -r ./app/worker.rb"  
+    command: bash -c "bundle install && bundle exec sidekiq -r ./app/worker.rb"  
     depends_on:
       - redis
       - rebase-labs
