@@ -4,6 +4,7 @@ require 'json'
 require_relative 'app/import_from_csv'
 require_relative 'app/test'
 require_relative 'app/worker'
+require_relative 'app/db'
 
 #Web
 get '/index' do
@@ -81,11 +82,15 @@ configure do
   set :protection, :except => [:json_csrf]
 end
 
-before do
+before(:all) do
   response.headers['Access-Control-Allow-Origin'] = 'http://0.0.0.0'
 end
 
 if ENV['APP_ENV'] != 'test'
+  postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin123')
+  DB.create_tables(postgresdb)
+  postgresdb.close
+  
   Rack::Handler::Puma.run(
     Sinatra::Application,
     Port: 3000,
