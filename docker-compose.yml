@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
       - ./gems:/usr/local/bundle
-    command: bash -c "bundle && ruby server.rb"
+    command: bash -c "bundle install && ruby server.rb"
     environment:
       REDIS_URL: redis://redis:6379/0
     ports:
@@ -43,3 +43,4 @@ services:
     command: bash -c "bundle exec sidekiq -r ./app/worker.rb"  
     depends_on:
       - redis
+      - rebase-labs
