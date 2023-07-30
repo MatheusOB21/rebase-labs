@@ -340,8 +340,8 @@ Response:
       "name":"Dra. Isabelly Rêgo"
    },
    "tests":[
-      {"
-         type":"hemácias",
+      {
+         "type":"hemácias",
          "limits_type":"45-52",
          "result_type":"0"
       },
@@ -570,19 +570,25 @@ curl -X POST http://0.0.0.0:3000/import -d "cpf;nome paciente;email paciente;dat
 O endpoint `/index`, lê os dados do **banco de dados** e renderiza em um formato de tabelas, no formato HTML. 
 
 #### Tela:
+<img style="width: 1000px;" src="https://github.com/MatheusOB21/rebase-labs/assets/92684440/ed2c55d5-9a6f-4551-a2ee-bf43708a0e97">
 
 Nessa tela inicial é possível pesquisar por exames a partir do token:
+<img style="width: 1000px;" src="https://github.com/MatheusOB21/rebase-labs/assets/92684440/d878413b-0b90-4d95-954b-28ce266a3bcd">
 
 É possível realizar o importe de dados de exames, a partir de um arquivo CSV:
+<img style="width: 1000px;" src="https://github.com/MatheusOB21/rebase-labs/assets/92684440/417618da-3306-4a47-b52b-4d7d7174dcdf">
 
 ---
+
 #### 2: Listagem dos detalhes de um test/exame cadastrado, em HTML
 
 O endpoint `/details?token=:token`, lê os dados do **banco de dados** e renderiza em um formato de tabelas, no formato HTML, os detalhes de um exame a partir do token. 
 
 #### Tela:
+<img style="width: 1000px;" src="https://github.com/MatheusOB21/rebase-labs/assets/92684440/51c821c0-a571-44f4-8569-3321514b1fc6">
 
 Essa tela é acessível pela tela inicial, a partir do ícone "I":
+<img style="width: 1000px;" src="https://github.com/MatheusOB21/rebase-labs/assets/92684440/def64eb8-d6dd-4fc6-aad5-792048e6afd5">
 
 ### Dúvidas?
 Em caso de dúvidas sobre a aplicação, fique à vontade para entrar em contato: **matheus53barros@gmail.com**
