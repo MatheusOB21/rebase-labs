@@ -2,14 +2,14 @@ require_relative '../app/import_from_csv.rb'
 require_relative 'spec_helper'
 require 'csv'
 
-describe 'formatação do CSV' do
+describe 'formatação do CSV' do  
   it 'deve retornar uma array' do
     csv = File.open("spec/support/data.csv")
 
     result = ImportCSV.format_csv(csv)
 
     expect(result.class).to eq Array
-  end
+  end  
   it 'deve retornar uma com as chaves do CSV' do
     csv = File.open("spec/support/data.csv")
 
@@ -30,5 +30,5 @@ describe 'formatação do CSV' do
     expect(result.first.keys).to include('tipo exame')
     expect(result.first.keys).to include('limites tipo exame')
     expect(result.first.keys).to include('resultado tipo exame')
-  end
+  end 
 end

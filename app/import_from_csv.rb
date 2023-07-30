@@ -3,7 +3,6 @@ require_relative 'db'
 class ImportCSV
   def self.format_csv(csv)
     rows = CSV.parse(csv, col_sep: ';', encoding: "UTF-8")
-
     columns = rows.shift
 
     rows.map! do |row|

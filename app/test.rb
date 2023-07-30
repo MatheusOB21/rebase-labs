@@ -60,7 +60,7 @@ class Test
                                     patients.address AS patient_address, patients.city AS patient_city, patients.state AS patient_state,
                                     doctors.crm AS doctor_crm, doctors.state_crm AS doctor_state_crm, doctors.name AS doctor_name
                                     FROM exams JOIN patients ON 
-                                    patients.cpf = exams.patient_cpf JOIN doctors ON doctors.crm = exams.doctor_crm WHERE result_token LIKE $1', ["%#{token}%"]).to_a                                 
+                                    patients.cpf = exams.patient_cpf JOIN doctors ON doctors.crm = exams.doctor_crm WHERE result_token ILIKE $1', ["%#{token}%"]).to_a                                 
     format_json(postgresdb, exams)
   end
 end

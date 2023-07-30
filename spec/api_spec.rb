@@ -14,7 +14,6 @@ RSpec.describe 'API' do
     expect(last_response.status).to eq 404
     expect(last_response.body).to include('Not found')
   end
-
   it "/tests retorna 200 e todos os exames cadastrados" do
     csv = File.open("spec/support/data_example.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
@@ -41,8 +40,7 @@ RSpec.describe 'API' do
     expect(JSON.parse(last_response.body).first.keys).to include('exam_type')
     expect(JSON.parse(last_response.body).first.keys).to include('limits_exam_type')
     expect(JSON.parse(last_response.body).first.keys).to include('result_exam_type')
-  end
-  
+  end  
   it "/tests/format=json e retorna 200 e todos os exames cadastrados, com formato JSON" do
     csv = File.open("spec/support/data_example.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
@@ -62,8 +60,7 @@ RSpec.describe 'API' do
     expect(JSON.parse(last_response.body).first.keys).to include('tests')
     expect(JSON.parse(last_response.body).first['tests'].class).to eq Array
     expect(JSON.parse(last_response.body).first['tests'].class).to eq Array
-  end
-  
+  end  
   it "/tests/:token retorna hash com detalhes do exame, caso encontre apenas um" do
     csv = File.open("spec/support/data_example.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
@@ -83,8 +80,7 @@ RSpec.describe 'API' do
     expect(JSON.parse(last_response.body).keys).to include('tests')
     expect(JSON.parse(last_response.body)['tests'].class).to eq Array
     expect(JSON.parse(last_response.body)['tests'].class).to eq Array
-  end
-  
+  end 
   it "/tests/:token retorna array com detalhes de exames, caso encontre mais de um" do
     csv = File.open("spec/support/data.csv")
     pg = PG.connect(host: 'postgresdb', dbname: 'test', user: 'admin', password: 'admin123')
@@ -98,5 +94,4 @@ RSpec.describe 'API' do
     expect(last_response.body).to include('AD0XNN')
     expect(JSON.parse(last_response.body).class).to eq Array
   end
-
 end

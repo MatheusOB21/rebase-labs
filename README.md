@@ -1,77 +1,136 @@
 # Rebase Labs
 
-Uma app web para listagem de exames médicos.
+Uma aplicação usada para a listagem de exames médicos a partir do banco de dados Postgrees, utilizando tecnologias ruby.
+A aplicação é feita com a gem Sinatra <span style="margin-left: 3px; margin-right: 3px;">[![Gem Version](https://badge.fury.io/rb/sinatra.svg)](https://badge.fury.io/rb/sinatra)</span> e com a execução assíncrona dos dados pela gem Sidekiq <span style="margin-left: 3px; margin-right: 3px;">[![Gem Version](https://badge.fury.io/rb/sidekiq.svg)](https://rubygems.org/gems/sidekiq).</span>
 
 ---
 
-### Tech Stack
+### Tecnologias
 
-* Docker
-* Ruby
-* Javascript
-* HTML
-* CSS
-
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Ruby](https://img.shields.io/badge/ruby-%23CC342D.svg?style=for-the-badge&logo=ruby&logoColor=white)
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/redis-%23DD0031.svg?style=for-the-badge&logo=redis&logoColor=white)
 ---
 
-### Premissa
+### Requisitos
 
-A premissa principal deste laboratório é que a app **não seja feita em Rails**, devendo seguir o padrão **Sinatra** que há neste projeto, ou então se preferir, podendo utilizar outro web framework que **não** seja Rails, por ex. grape, padrino, rack, etc ou até mesmo um HTTP/TCP server "na mão".
-
+* Docker instalado: https://www.docker.com/ 
 ---
 
-### Laboratório
+### Como rodar a aplicação?
 
-Abaixo vamos listar os 4 principais objetivos deste laboratório. Mas não se preocupe se nesta fase parecer muita coisa, pois vamos abordar os temas e dicas de cada etapa em diferentes sessões ao longo das próximas 2 semanas.
-
----
-
-### Feature 1: Importar os dados do CSV para um database SQL
-
-A primeira versão original da API deverá ter apenas um endpoint `/tests`, que lê os dados de um arquivo CSV e renderiza no formato JSON. Você deve _modificar_ este endpoint para que, ao invés de ler do CSV, faça a leitura **diretamente de uma base de dados SQL**.
-
-#### Script para importar os dados
-
-Este passo de "importar" os dados do CSV para um **database SQL** (por ex. PostgreSQL), pode ser feito com um script Ruby simples ou **rake** task, como preferir.
-
-Idealmente deveríamos ser capazes de rodar o script:
+Clone aplicação
 ```bash
-$ ruby import_from_csv.rb
+$ git clone https://github.com/MatheusOB21/rebase-labs.git
 ```
-E depois, ao consultar o SQL, os dados deveriam estar *populados*.
+Entre no diretório criado
+```bash
+cd rebase-labas
+```
+Executue o comando para subir os containers
+```bash
+$ bash bin/setup
+```
+ou
 
-* _Dica 1_: consultar o endpoint `/tests` para ver como é feita a leitura de um arquivo CSV
-* _Dica 2_: utilizar um container para a API e **outro container** para o PostgreSQL. Utilize **networking** do `Docker` para que os 2 containers possam conversar entre si
-* _Dica 3_: comandos SQL -> `DROP TABLE`, `INSERT INTO`
+```bash
+$ bin/setup
+```
+Após isso sua aplicação estará rodando no seguinte endereço:  http://0.0.0.0:3000
 
-#### Modificar a implementação do endpoint atual
+### Como rodar os testes?
 
-O resultado atual que o endpoint traz ao fazer a leitura do CSV, deve ser o mesmo quando modificarmos para ler direto do database.
+Com a aplicação rodando, execute o seguinte comando em outro terminal
+```bash
+$ bash bin/rspec
+```
+ou
 
-* _Dica 1_: primeiramente, separar o código que busca os dados em uma classe Ruby separada, pois além de ser mais fácil para testar, facilita o refactoring para quando fizermos a leitura direto do database SQL
-* _Dica 2_: testar primeiro as queries SQL direto no database, `SELECT` etc. Depois utilizar um **driver** para o PostgreSQL para que a app Ruby saiba "conversar" com o database.
-* _Dica 3_: utilizar a gem `pg` na app Ruby, ou então se preferir, utilizar a gem `ActiveRecord` standalone (fora do Rails) na app.
+```bash
+$ bin/rspec
+```
+
+### Como parar a aplicação?
+
+No terminal que está rodando a aplicação, basta apertar o conjunto de teclas: Ctrl-C
+
+### Como parar e remover os containers da aplicação?
+
+Em outro terminal, rode o seguinte comando:
+```bash
+$ bash bin/down
+```
+ou
+
+```bash
+$ bin/down
+```
+*_Obs_ : Esse comando irá remover os containers e a rede criada para conexão deles. 
 
 ---
+### Endpoints da aplicação API
+#### 1: Listagem de todos os testes/exames cadastrados em JSON
 
-### Feature 2: Exibir listagem de exames no navegador Web
-Agora vamos exibir as mesmas informações da etapa anterior, mas desta vez de uma forma mais amigável ao usuário. Para isto, você deve criar uma nova aplicação, que conterá todo o código necessário para a web - HTML, CSS e Javascript.
-
-Criar um endpoint do Sinatra (A) que devolve listagem de exames em formato JSON.
-
-Adicionar também, outro endpoint do Sinatra (B) que devolve um HTML contendo apenas instruções Javascript. Estas instruções serão responsáveis por buscar os exames no enponint (A) e exibi-los na tela de forma amigável.
-
-O objetivo aqui, neste passo, é carregar os dados de exames da API utilizando Javascript. Como exemplo, você pode abrir em seu browser o arquivo `index.html` contido neste snippet e investigar seu funcionamento.
-
-* _Dica 1_: Pesquise sobre `Fetch API`, uma API Javascript para execução de requisições web.
-* _Dica 2_: Utilize o `console` das `developer tools` do seu browser para experimentar com Javascript e Fetch API.
-* _Dica 3_: Pesquise sobre DOM, uma API Javascript para manipular uma estrutura de documentos (seu HTML é um tipo de documento).
-* _Dica 4_: Utilize CSS para estilizar a página e deixá-la mais amigável ao usuário.
+O endpoint `/tests`, lê os dados do **banco de dados** e renderiza em um formato simples, no formato JSON. 
 
 #### Exemplo do request e response
+
 Request:
 ```bash
 GET /tests
+```
+
+Response:
+```json
+[{
+   "cpf":"048.973.170-99",
+   "patient_name":"Guilheme Lima Alves",
+   "patient_email":"gerald.crona@ebert-quigley.com",
+   "patient_birth_date":"2001-03-11",
+   "patient_address":"165 Rua Rafaela",
+   "patient_city":"Ituverava",
+   "patient_state":"Alagoas",
+   "doctor_crm":"B000XJ20J4",
+   "doctor_crm_state":"PI",
+   "doctor_name":"Maria Luiza Pires",
+   "doctor_email":"denna@wisozk.biz",
+   "exam_result_token":"ADFZ17",
+   "exam_date":"2021-08-05",
+   "exam_type":"hemácias",
+   "limits_exam_type":"45-52",
+   "result_exam_type":"97"
+   },
+   {
+   "cpf":"048.108.078-05",
+   "patient_name":"Jasmine Da Mendes",
+   "patient_email":"mariana_crist@kutch-torp.com",
+   "patient_birth_date":"1995-07-03",
+   "patient_address":"527 Rodovia Júlio",
+   "patient_city":"Lagoa da Canoa",
+   "patient_state":"Paraíba",
+   "doctor_crm":"B0002IFG76",
+   "doctor_crm_state":"SC",
+   "doctor_name":"Maria Helena Ramalho",
+   "doctor_email":"rayford@kemmer-kunze.info",
+   "exam_result_token":"OX1I67",
+   "exam_date":"2021-07-09",
+   "exam_type":"leucócitos",
+   "limits_exam_type":"9-61",
+   "result_exam_type":"91"
+}]
+   
+```
+---
+#### 2: Listagem de todos os testes/exames cadastrados em JSON, com formatação e tratamento de dados.
+
+O endpoint `/tests/format=json`, lê os dados do **banco de dados** e renderiza no formato JSON, porém com formatação e tratamento dos dados
+
+#### Exemplo do request e response
+
+Request:
+```bash
+GET /tests/format=json
 ```
 
 Response:
@@ -158,27 +217,16 @@ Response:
    ]
 }]
 ```
-
 ---
+#### 3: Listagem dos detalhes de um exame cadastrado em JSON, a partir de um token.
 
-### Feature 3: Exibir detalhes de um exame em formato HTML a partir do token do resultado
-Nesta etapa vamos implementar uma nova funcionalidade: pesquisar os resultados com base em um token de exame. 
-
-Você deve criar um endpoint no Sinatra (C) que devolve, com base no token enviado no request, os detalhes de um exame em formato JSON.
-
-Adicionalmente, também criar, no HTML da listagem de exames, uma tag HTML `<form>` que via Javascript faz request ao endpoint (C) e renderiza os detalhes do exame em HTML.
-
-#### Criar endpoint para mostrar os detalhes de um exame médico
-
-Você deve implementar o endpoint `/tests/:token` que permita que o usuário da API, ao fornecer o token do exame, possa ver os detalhes daquele exame no formato JSON, tal como está implementado no endpoint
-`/tests`. A consulta deve ser feita na base de dados.
+O endpoint `/tests/:token` recebe um token como parâmetro e retora a partir do **banco de dados** um exame com aquele token. Caso seja informado um token que existe, ele renderiza os detalhes desse exame.
 
 #### Exemplo do request e response
 Request:
 ```bash
 GET /tests/T9O6AI
 ```
-
 Response:
 
 ```json
@@ -264,65 +312,277 @@ Response:
 }
 ```
 
-* _Dica_: consultar no database SQL com `SELECT` e depois, trabalhar em cima dos dados de resposta **antes** de renderizar o JSON
+Porém caso seja informado apenas algumas letras, ele irá retornar vários exames que possuam aquele pedaço.
 
+#### Exemplo do request e response
+Request:
+```bash
+GET /tests/OL
+```
+Response:
+
+```json
+[{
+   "result_token":"AOL9ST",
+   "result_date":"2021-06-26",
+   "patient":{
+      "cpf":"048.973.170-88",
+      "name":"Emilly Batista Neto",
+      "email":"gerald.crona@ebert-quigley.com",
+      "birthday":"2001-03-11",
+      "address":"165 Rua Rafaela",
+      "city":"Ituverava",
+      "state":"Alagoas"
+   },
+   "doctor":{
+      "crm":"B0002W2RBG",
+      "crm_state":"CE",
+      "name":"Dra. Isabelly Rêgo"
+   },
+   "tests":[
+      {"
+         type":"hemácias",
+         "limits_type":"45-52",
+         "result_type":"0"
+      },
+      {
+         "type":"leucócitos",
+         "limits_type":"9-61",
+         "result_type":"72"
+      },
+      {
+         "type":"plaquetas"
+         ,"limits_type":"11-93",
+         "result_type":"56"
+      },
+      {
+         "type":"hdl",
+         "limits_type":"19-75",
+         "result_type":"19"
+      },
+      {
+         "type":"ldl",
+         "limits_type":"45-54",
+         "result_type":"53"
+      },
+      {
+         "type":"vldl",
+         "limits_type":"48-72",
+         "result_type":"19"
+      },
+      {
+         "type":"glicemia",
+         "limits_type":"25-83",
+         "result_type":"48"
+      },
+      {
+         "type":"tgo",
+         "limits_type":"50-84",
+         "result_type":"92"
+      },
+      {
+         "type":"tgp",
+         "limits_type":"38-63",
+         "result_type":"100"
+      },
+      {
+         "type":"eletrólitos",
+         "limits_type":"2-68",
+         "result_type":"69"
+      },
+      {
+         "type":"tsh",
+         "limits_type":"25-80",
+         "result_type":"8"
+      },
+      {
+         "type":"t4-livre",
+         "limits_type":"34-60",
+         "result_type":"7"
+      },
+      {
+         "type":"ácido úrico",
+         "limits_type":"15-61",
+         "result_type":"6"
+      }
+   ]},
+   {
+      "result_token":"DW9OLA",
+      "result_date":"2021-12-24",
+      "patient":{
+         "cpf":"094.010.477-66",
+         "name":"Meire Paes",
+         "email":"billie.bernier@ankunding-ratke.co",
+         "birthday":"1981-06-24",
+         "address":"7187 Rua Mariah",
+         "city":"Rio Negro",
+         "state":"Roraima"
+      },
+      "doctor":{
+         "crm":"B0002W2RBG",
+         "crm_state":"CE",
+         "name":"Dra. Isabelly Rêgo"
+      },
+      "tests":[
+         {
+            "type":"hemácias",
+            "limits_type":"45-52",
+            "result_type":"94"
+         },
+         {
+            "type":"leucócitos",
+            "limits_type":"9-61",
+            "result_type":"97"
+         },
+         {
+            "type":"plaquetas",
+            "limits_type":"11-93",
+            "result_type":"35"
+         },
+         {
+            "type":"hdl",
+            "limits_type":"19-75",
+            "result_type":"61"
+         },
+         {
+            "type":"ldl",
+            "limits_type":"45-54",
+            "result_type":"56"
+         },
+         {
+            "type":"vldl",
+            "limits_type":"48-72",
+            "result_type":"4"
+         },
+         {
+            "type":"glicemia",
+            "limits_type":"25-83",
+            "result_type":"76"
+         },
+         {
+            "type":"tgo",
+            "limits_type":"50-84",
+            "result_type":"44"
+         },
+         {
+            "type":"tgp",
+            "limits_type":"38-63",
+            "result_type":"1"
+         },
+         {
+            "type":"eletrólitos",
+            "limits_type":"2-68",
+            "result_type":"100"
+         },
+         {
+            "type":"tsh",
+            "limits_type":"25-80",
+            "result_type":"78"
+         },
+         {
+            "type":"t4-livre",
+            "limits_type":"34-60",
+            "result_type":"8"
+         },
+         {
+            "type":"ácido úrico",
+            "limits_type":"15-61",
+            "result_type":"97"
+         }]
+   }]
+```
 ---
+#### 4: Importação de dados a partir dos dados de um CSV
 
-### Feature 4: Importar resultados de exames em formato CSV de forma assíncrona
-Neste momento fazemos o import através de um script. Mas este script tem que ser executado por alguém developer ou admin do sistema.
+O endpoint `/import` realiza a importação dos dados de um arquivo CSV para o **banco de dados**.
 
-Para melhorar isto, idealmente qualquer usuário da API poderia chamar um endpoint para atualizar os dados. Assim, o endpoint deveria aceitar um arquivo CSV dinâmico e importar os dados para o PostgreSQL.
+#### Exemplo do request
+Request:
+```bash
+POST /import
+```
+Modelo de arquivo CSV
+```csv
+cpf;nome paciente;email paciente;data nascimento paciente;endereço/rua paciente;cidade paciente;estado patiente;crm médico;crm médico estado;nome médico;email médico;token resultado exame;data exame;tipo exame;limites tipo exame;resultado tipo exame
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;hemácias;45-52;97
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;leucócitos;9-61;89
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;plaquetas;11-93;97
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;hdl;19-75;0
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;ldl;45-54;80
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;vldl;48-72;82
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;glicemia;25-83;98
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tgo;50-84;87
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tgp;38-63;9
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;eletrólitos;2-68;85
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tsh;25-80;65
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;t4-livre;34-60;94
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;ácido úrico;15-61;2
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;hemácias;45-52;28
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;leucócitos;9-61;91
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;plaquetas;11-93;18
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;hdl;19-75;74
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;ldl;45-54;66
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;vldl;48-72;41
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;glicemia;25-83;6
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tgo;50-84;32
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tgp;38-63;16
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;eletrólitos;2-68;61
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tsh;25-80;13
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;t4-livre;34-60;9
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;ácido úrico;15-61;78
+```
+#### Como utilizar esse endpoint?
+Você pode realizar um `POST` via CURL pelo terminal, passando o conteúdo do CSV como corpo do HTTP.
 
 Exemplo:
 ```bash
-$ POST /import
+curl -X POST http://0.0.0.0:3000/import -d "cpf;nome paciente;email paciente;data nascimento paciente;endereço/rua paciente;cidade paciente;estado patiente;crm médico;crm médico estado;nome médico;email médico;token resultado exame;data exame;tipo exame;limites tipo exame;resultado tipo exame
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;hemácias;45-52;97
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;leucócitos;9-61;89
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;plaquetas;11-93;97
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;hdl;19-75;0
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;ldl;45-54;80
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;vldl;48-72;82
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;glicemia;25-83;98
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tgo;50-84;87
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tgp;38-63;9
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;eletrólitos;2-68;85
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;tsh;25-80;65
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;t4-livre;34-60;94
+048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;ácido úrico;15-61;2
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;hemácias;45-52;28
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;leucócitos;9-61;91 
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;plaquetas;11-93;18 
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;hdl;19-75;74
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;ldl;45-54;66
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;vldl;48-72;41
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;glicemia;25-83;6
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tgo;50-84;32
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tgp;38-63;16
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;eletrólitos;2-68;61
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;tsh;25-80;13
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;t4-livre;34-60;9
+048.108.078-05;Jasmine Da Mendes;mariana_crist@kutch-torp.com;1995-07-03;527 Rodovia Júlio;Lagoa da Canoa;Paraíba;B0002IFG76;SC;Maria Helena Ramalho;rayford@kemmer-kunze.info;OX1I67;2021-07-09;ácido úrico;15-61;78"
 ```
+### Endpoints da aplicação WEB
+#### 1: Listagem de todos os testes/exames cadastrados, em HTML
 
-#### Implementar endpoint para receber um CSV no HTTP request
-Neste passo, devemos focar apenas em receber o CSV via HTTP e utilizar o mesmo código do script de import para popular o database.
+O endpoint `/index`, lê os dados do **banco de dados** e renderiza em um formato de tabelas, no formato HTML. 
 
-* _Dica 1_: receber o **conteúdo do CSV** no HTTP request body
-* _Dica 2_: pode usar a ferramenta `Postman` para testar os pedidos via HTTP. Pode também utilizar o `curl` para isto
-* _Dica 3_: nesta fase, ainda fazer o processo "síncrono", ou seja, o usuário que chamar o endpoint `POST /import` deve ficar à espera
+#### Tela:
 
-#### Executar o import do endpoint de forma assíncrona em background
-Uma vez que fizemos o endpoint de `POST /import`, agora vamos focar numa implementação que permita que o usuário não fique _à espera_, ou seja, executar em um **background job**, mesmo o usuário sabendo que
-não vai ficar pronto imediatamente. Neste caso, o processo de import fica pronto **eventualmente**.
+Nessa tela inicial é possível pesquisar por exames a partir do token:
 
-* _Dica 1_: utilizar o `Sidekiq` para o processamento assíncrono
-* _Dica 2_: o Sidekiq roda em um container separado da API
-* _Dica 3_: subir um container para a visualização "Web" das filas do Sidekiq
-
-#### Botão de "Importar CSV" na página Web em formato HTML
-Neste momento, o processo de importar o CSV está manual com chamada direta ao endpoint `POST /import`. Para simplificar a quem utiliza a plataforma, a página HTML com a listagem pode trazer um botão que faz a requisição com o upload do conteúdo do arquivo CSV.
-
-* _Dica 1_: o botão ficará "estático" no HTML
-* _Dica 2_: a ação do botão deverá fazer o pedido à API (`POST /import`), **enviando o conteúdo** do CSV no corpo do request
+É possível realizar o importe de dados de exames, a partir de um arquivo CSV:
 
 ---
+#### 2: Listagem dos detalhes de um test/exame cadastrado, em HTML
 
-### Como as sessões serão estruturadas
-Iremos realizar 4 sessões de aprendizado nos principais temas que serão abordados durante o laboratório.
+O endpoint `/details?token=:token`, lê os dados do **banco de dados** e renderiza em um formato de tabelas, no formato HTML, os detalhes de um exame a partir do token. 
 
-* Sessão 1: Docker, Sinatra e SQL
-* Sessão 2: HTTP e Web (Javascript, HTML e CSS)
-* Sessão 3: Processamento assíncrono (Sidekiq)
-* Sessão 4: Easter egg, tirar dúvidas finais e encerramento
+#### Tela:
 
----
-
-### Nossos valores
-Aqui listamos alguns valores que compartilhamos sobre engenharia de software.
-
-#### Valorizamos documentação
-Tente documentar o máximo possível sobre sua aplicação em arquivos `Markdown` (como este aqui por exemplo) ou então em páginas wiki.
-
-Uma boa documentação é a *base* para a comunicação e boa saúde de um projeto de software.
-
-#### Valorizamos testes
-Testes são uma parte crucial no desenvolvimento de software. Se teu projeto não tem testes, não há garantias automatizadas de que ele vai continuar funcionando ao longo do tempo, à medida que mais código é adicionado nele.
-
----
+Essa tela é acessível pela tela inicial, a partir do ícone "I":
 
 ### Dúvidas?
-Em caso de dúvidas sobre qualquer um dos labs ou conteúdo das sessões, fique à vontade para conversar na ferramenta de comunicação do programa.
+Em caso de dúvidas sobre a aplicação, fique à vontade para entrar em contato: **matheus53barros@gmail.com**
