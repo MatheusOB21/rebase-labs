@@ -72,21 +72,6 @@ post '/import' do
 end
 
 # Configuration
-options "*" do
-  response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
-  response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
-  response.headers["Access-Control-Allow-Origin"] = "*"
-  200
-end
-
-configure do
-  set :protection, :except => [:json_csrf]
-end
-
-before(:all) do
-  response.headers['Access-Control-Allow-Origin'] = 'http://0.0.0.0'
-end
-
 if ENV['APP_ENV'] != 'test'
   Rack::Handler::Puma.run(
     Sinatra::Application,
