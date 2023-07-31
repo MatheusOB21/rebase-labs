@@ -1,5 +1,5 @@
 const fragment = new DocumentFragment();
-const url_all = 'http://0.0.0.0:3000/tests/format=json';
+const url_all = 'http://localhost:3000/tests/format=json';
 
 function setData(url){ 
   fetch(url).
@@ -47,7 +47,7 @@ function creatDetailsElement(tr, exam){
   const div = document.createElement('div');
   div.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="1.5em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>`;
   div.addEventListener('click', function() {
-    window.location.href = `http://0.0.0.0:3000/index/details?token=${exam['result_token']}`;
+    window.location.href = `http://localhost:3000/index/details?token=${exam['result_token']}`;
   })
   td_details = document.createElement('td');
   td_details.appendChild(div);  
@@ -61,7 +61,7 @@ function searchExam(){
 
   if(value != ''){
     tbody.innerHTML = ''
-    searchUrl = `http://0.0.0.0:3000/tests/${value}`
+    searchUrl = `http://localhost:3000/tests/${value}`
     setData(searchUrl);
   }else{
     tbody.innerHTML = ''
@@ -76,7 +76,7 @@ function inputFile(){
 async function sendPost(event){
   const file = event.target.files.item(0)
   const text = await file.text();
-  await fetch(`http://0.0.0.0:3000/import`, {
+  await fetch(`http://localhost:3000/import`, {
     method: 'POST',
     body: `${text}`,
     headers: {

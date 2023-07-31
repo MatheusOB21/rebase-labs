@@ -42,7 +42,7 @@ ou
 ```bash
 $ bin/setup
 ```
-Após isso sua aplicação estará rodando no seguinte endereço:  http://0.0.0.0:3000
+Após isso sua aplicação estará rodando no seguinte endereço:  http://localhost:3000
 
 ### Como rodar os testes?
 
@@ -541,7 +541,7 @@ Você pode realizar um `POST` via CURL pelo terminal, passando o conteúdo do CS
 
 Exemplo:
 ```bash
-curl -X POST http://0.0.0.0:3000/import -d "cpf;nome paciente;email paciente;data nascimento paciente;endereço/rua paciente;cidade paciente;estado patiente;crm médico;crm médico estado;nome médico;email médico;token resultado exame;data exame;tipo exame;limites tipo exame;resultado tipo exame
+curl -X POST http://localhost:3000/import -d "cpf;nome paciente;email paciente;data nascimento paciente;endereço/rua paciente;cidade paciente;estado patiente;crm médico;crm médico estado;nome médico;email médico;token resultado exame;data exame;tipo exame;limites tipo exame;resultado tipo exame
 048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;hemácias;45-52;97
 048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;leucócitos;9-61;89
 048.973.170-99;Guilheme Lima Alves;gerald.crona@ebert-quigley.com;2001-03-11;165 Rua Rafaela;Ituverava;Alagoas;B000XJ20J4;PI;Maria Luiza Pires;denna@wisozk.biz;ADFZ17;2021-08-05;plaquetas;11-93;97

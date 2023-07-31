@@ -4,7 +4,7 @@ const fragment3 = new DocumentFragment();
 const queryString= window.location.search
 const urlParams = new URLSearchParams(queryString);
 const token = urlParams.get('token')
-const url = `http://0.0.0.0:3000/tests/${token}`;
+const url = `http://localhost:3000/tests/${token}`;
 
 const h1 = document.querySelector('h1');
 h1.textContent = `Detalhes do Exame: ${token}`
