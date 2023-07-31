@@ -22,11 +22,16 @@ A aplicação é feita com a gem Sinatra <span style="margin-left: 3px; margin-r
 
 Clone aplicação
 ```bash
-$ git clone https://github.com/MatheusOB21/rebase-labs.git
+$ git clone https://github.com/MatheusOB21/rebase-labs.git #HTTPS
+```
+ou
+
+```bash
+$ git clone git@github.com:MatheusOB21/rebase-labs.git #SSH
 ```
 Entre no diretório criado
 ```bash
-cd rebase-labas
+cd rebase-labs
 ```
 Executue o comando para subir os containers
 ```bash

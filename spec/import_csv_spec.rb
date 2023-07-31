@@ -1,8 +1,8 @@
-require_relative '../app/import_from_csv.rb'
 require_relative 'spec_helper'
+require_relative '../app/import_from_csv.rb'
 require 'csv'
 
-describe 'formatação do CSV' do  
+describe 'Formatação do CSV' do  
   it 'deve retornar uma array' do
     csv = File.open("spec/support/data.csv")
 

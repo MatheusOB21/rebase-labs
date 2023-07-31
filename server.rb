@@ -71,6 +71,7 @@ post '/import' do
   redirect '/index'
 end
 
+# Configuration
 options "*" do
   response.headers["Allow"] = "GET, PUT, POST, DELETE, OPTIONS"
   response.headers["Access-Control-Allow-Headers"] = "Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token"
@@ -90,7 +91,7 @@ if ENV['APP_ENV'] != 'test'
   postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin123')
   DB.create_tables(postgresdb)
   postgresdb.close
-  
+
   Rack::Handler::Puma.run(
     Sinatra::Application,
     Port: 3000,

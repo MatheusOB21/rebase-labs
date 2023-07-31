@@ -5,7 +5,7 @@ class Test
   @@USER = 'admin'
   @@PASSWORD = 'admin123'  
   @@DBNAME = ''   
-  
+
   if ENV['APP_ENV'] == 'test'
     @@DBNAME = 'test'
   end

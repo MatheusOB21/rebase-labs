@@ -34,9 +34,10 @@ RSpec.configure do |conf|
     pg.close
   }
 
-
   conf.include Rack::Test::Methods
-
+  
+  conf.formatter = :documentation
+  
   conf.before(type: :system) do
     driven_by(:rack_test)
   end
