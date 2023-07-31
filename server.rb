@@ -88,10 +88,6 @@ before(:all) do
 end
 
 if ENV['APP_ENV'] != 'test'
-  postgresdb = PG.connect(host: 'postgresdb', user: 'admin', password: 'admin123')
-  DB.create_tables(postgresdb)
-  postgresdb.close
-
   Rack::Handler::Puma.run(
     Sinatra::Application,
     Port: 3000,

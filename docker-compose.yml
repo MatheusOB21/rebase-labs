@@ -7,13 +7,14 @@ services:
     image: redis
   
   postgresdb:
-    container_name: postgreesdb
+    container_name: postgresdb
     image: postgres
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin123
     volumes: 
     - ./postgres-data:/var/lib/postgresql/data
+    - ./helpers:/docker-entrypoint-initdb.d
   
   rebase-labs:
     container_name: rebaselabs
