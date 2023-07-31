@@ -44,6 +44,10 @@ a.navbar-brand{
   margin-right: 5%;
 }
 
+a.navbar-brand:hover{
+  cursor: pointer;
+}
+
 .navbar-nav{
   display: flex;
   font-size: 1rem;
